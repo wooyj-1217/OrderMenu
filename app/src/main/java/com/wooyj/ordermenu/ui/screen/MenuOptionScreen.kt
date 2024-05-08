@@ -40,7 +40,10 @@ import com.wooyj.ordermenu.utils.addCommasToNumber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuOptionScreen(navController: NavController, menu: MenuType) {
+fun MenuOptionScreen(
+    navController: NavController,
+    menu: MenuType,
+) {
     OrderMenuTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -52,9 +55,10 @@ fun MenuOptionScreen(navController: NavController, menu: MenuType) {
                 })
             },
             content =
-            {
-                MenuOptionUI(Modifier.padding(it), navController, menu)
-            })
+                {
+                    MenuOptionUI(Modifier.padding(it), navController, menu)
+                },
+        )
     }
 }
 
@@ -73,23 +77,26 @@ fun PreviewMenuOptionScreen() {
                 })
             },
             content =
-            {
-                MenuOptionUI(
-                    Modifier.padding(it),
-                    null,
-                    MenuType.Beverage("망고에이드", 2500, listOf(TempOption.Ice))
-                )
-            })
+                {
+                    MenuOptionUI(
+                        Modifier.padding(it),
+                        null,
+                        MenuType.Beverage("망고에이드", 2500, listOf(TempOption.Ice)),
+                    )
+                },
+        )
     }
 }
 
-
 @Composable
-fun MenuOptionUI(modifier: Modifier, navController: NavController?, menu: MenuType) {
-
+fun MenuOptionUI(
+    modifier: Modifier,
+    navController: NavController?,
+    menu: MenuType,
+) {
     var optionTemp by remember {
         mutableStateOf(
-            if (menu is MenuType.Beverage) TempOption.Ice.name.uppercase() else TempOption.Hot.name.uppercase()
+            if (menu is MenuType.Beverage) TempOption.Ice.name.uppercase() else TempOption.Hot.name.uppercase(),
         )
     }
     var optionCaffein by remember { mutableStateOf("카페인") }
@@ -99,11 +106,13 @@ fun MenuOptionUI(modifier: Modifier, navController: NavController?, menu: MenuTy
     val onCaffeinChanged = { text: String -> optionCaffein = text }
     val onIceChanged = { text: String -> optionIce = text }
 
-
     Column(modifier = modifier, verticalArrangement = Arrangement.SpaceBetween) {
-        Column(modifier = modifier
-            .padding(start = 20.dp, top = 60.dp, end = 20.dp)
-            .weight(1f)) {
+        Column(
+            modifier =
+                modifier
+                    .padding(start = 20.dp, top = 60.dp, end = 20.dp)
+                    .weight(1f),
+        ) {
             Text(menu.menuName)
             Text("${menu.price.addCommasToNumber()}원")
             Spacer(modifier = Modifier.height(40.dp))
@@ -111,16 +120,25 @@ fun MenuOptionUI(modifier: Modifier, navController: NavController?, menu: MenuTy
             when (menu) {
                 is MenuType.Coffee -> {
                     MenuOption(
-                        tempOptionList, "기본", optionTemp, onTempChanged
+                        tempOptionList,
+                        "기본",
+                        optionTemp,
+                        onTempChanged,
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                     MenuOption(
-                        caffeinOptionList, "디카페인", optionCaffein, onCaffeinChanged
+                        caffeinOptionList,
+                        "디카페인",
+                        optionCaffein,
+                        onCaffeinChanged,
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                     if (optionTemp == TempOption.Ice.name.uppercase()) {
                         MenuOption(
-                            iceOptionList, "얼음", optionIce, onIceChanged
+                            iceOptionList,
+                            "얼음",
+                            optionIce,
+                            onIceChanged,
                         )
                     }
                 }
@@ -129,11 +147,17 @@ fun MenuOptionUI(modifier: Modifier, navController: NavController?, menu: MenuTy
                     optionCaffein = ""
 
                     MenuOption(
-                        listOf(TempOption.Ice.name.uppercase()), "기본", optionTemp, onTempChanged
+                        listOf(TempOption.Ice.name.uppercase()),
+                        "기본",
+                        optionTemp,
+                        onTempChanged,
                     )
                     if (optionTemp == TempOption.Ice.name.uppercase()) {
                         MenuOption(
-                            iceOptionList, "얼음", optionIce, onIceChanged
+                            iceOptionList,
+                            "얼음",
+                            optionIce,
+                            onIceChanged,
                         )
                     }
                 }
@@ -143,7 +167,10 @@ fun MenuOptionUI(modifier: Modifier, navController: NavController?, menu: MenuTy
                     optionIce = ""
 
                     MenuOption(
-                        caffeinOptionList, "디카페인", optionCaffein, onCaffeinChanged
+                        caffeinOptionList,
+                        "디카페인",
+                        optionCaffein,
+                        onCaffeinChanged,
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                 }
@@ -156,25 +183,28 @@ fun MenuOptionUI(modifier: Modifier, navController: NavController?, menu: MenuTy
             }
         }
 
-        Button(modifier = Modifier
-            .fillMaxWidth()
-            .height(90.dp)
-            .padding(16.dp), onClick = {
-            val options = mutableListOf<String>()
-            if (optionTemp != "") {
-                options.add(optionTemp)
-            }
-            if (optionCaffein != "") {
-                options.add(optionCaffein)
-            }
-            if (optionIce != "") {
-                options.add("얼음($optionIce)")
-            }
-            options.joinToString(",")
-            navController?.navigate(
-                "menuConfirm/result=${options}&menuName=${menu.menuName}&price=${menu.price}"
-            )
-        }
+        Button(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(90.dp)
+                    .padding(16.dp),
+            onClick = {
+                val options = mutableListOf<String>()
+                if (optionTemp != "") {
+                    options.add(optionTemp)
+                }
+                if (optionCaffein != "") {
+                    options.add(optionCaffein)
+                }
+                if (optionIce != "") {
+                    options.add("얼음($optionIce)")
+                }
+                options.joinToString(",")
+                navController?.navigate(
+                    "menuConfirm/result=$options&menuName=${menu.menuName}&price=${menu.price}",
+                )
+            },
         ) {
             Text("다음", fontSize = 20.sp)
         }
@@ -186,7 +216,7 @@ fun MenuOption(
     options: List<String>,
     title: String,
     option: String,
-    onChanged: (String) -> Unit
+    onChanged: (String) -> Unit,
 ) {
     Column {
         Text(title)
@@ -195,26 +225,34 @@ fun MenuOption(
 }
 
 @Composable
-fun ToggleButtonGroup(optionList: List<String>, option: String, onChanged: (String) -> Unit) {
+fun ToggleButtonGroup(
+    optionList: List<String>,
+    option: String,
+    onChanged: (String) -> Unit,
+) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(60.dp),
-        verticalAlignment = Alignment.CenterVertically
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(60.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         optionList.forEach {
             Button(
-                modifier = Modifier
-                    .height(60.dp)
-                    .weight(1f)
-                    .padding(4.dp),
+                modifier =
+                    Modifier
+                        .height(60.dp)
+                        .weight(1f)
+                        .padding(4.dp),
                 onClick = {
                     println("onClick >>> $it")
                     onChanged(it)
                     println("$option")
-                }, colors = ButtonDefaults.buttonColors(
-                    containerColor = if (it == option) Color.DarkGray else Color.LightGray
-                )
+                },
+                colors =
+                    ButtonDefaults.buttonColors(
+                        containerColor = if (it == option) Color.DarkGray else Color.LightGray,
+                    ),
             ) {
                 Text(it)
             }

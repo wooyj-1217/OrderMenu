@@ -30,7 +30,6 @@ fun IntroScreen(navController: NavController) {
     }
 }
 
-
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewIntroScreen() {
@@ -51,22 +50,26 @@ fun IntroUI(navController: NavController?) {
             Text(
                 text = "반가워요",
                 fontSize = 30.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
             Text(
                 text = "주문을 시작할게요",
                 fontSize = 30.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
         }
-        Button(modifier = Modifier
-            .fillMaxWidth()
-            .height(90.dp)
-            .padding(16.dp), onClick = {
-            navController?.navigate(
-                "menu/list"
-            )
-        }) {
+        Button(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(90.dp)
+                    .padding(16.dp),
+            onClick = {
+                navController?.navigate(
+                    "menu/list",
+                )
+            },
+        ) {
             Text("다음", fontSize = 20.sp)
         }
     }

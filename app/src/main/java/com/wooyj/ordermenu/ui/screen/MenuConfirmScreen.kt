@@ -14,7 +14,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -29,7 +28,12 @@ import com.wooyj.ordermenu.utils.addCommasToNumber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuConfirmScreen(navController: NavController, result: String?, menuName: String, price: Int) {
+fun MenuConfirmScreen(
+    navController: NavController,
+    result: String?,
+    menuName: String,
+    price: Int,
+) {
     OrderMenuTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -47,17 +51,17 @@ fun MenuConfirmScreen(navController: NavController, result: String?, menuName: S
                 })
             },
             content =
-            {
-                MenuConfirmUI(Modifier.padding(it), navController, result, menuName, price)
-            })
+                {
+                    MenuConfirmUI(Modifier.padding(it), navController, result, menuName, price)
+                },
+        )
     }
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun PreviewMenuConfirmScreen() {
+private fun PreviewMenuConfirmScreen() {
     OrderMenuTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -69,34 +73,35 @@ fun PreviewMenuConfirmScreen() {
                 })
             },
             content =
-            {
-                MenuConfirmUI(
-                    Modifier.padding(it),
-                    null,
-                    "ICE/디카페인/얼음(적게)",
-                    "아메리카노",
-                    1000
-                )
-            })
+                {
+                    MenuConfirmUI(
+                        Modifier.padding(it),
+                        null,
+                        "ICE/디카페인/얼음(적게)",
+                        "아메리카노",
+                        1000,
+                    )
+                },
+        )
     }
 }
 
-
 @Composable
 fun MenuConfirmUI(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     navController: NavController?,
     result: String?,
     menuName: String,
-    price: Int
+    price: Int,
 ) {
     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
         Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp),
+            modifier =
+                modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Column {
                 Text(menuName)
@@ -106,19 +111,21 @@ fun MenuConfirmUI(
             }
             Text("${price.addCommasToNumber()}원")
         }
-        Button(modifier = Modifier
-            .fillMaxWidth()
-            .height(90.dp)
-            .padding(16.dp), onClick = {
-
-            navController?.navigate("menu") {
-                popUpTo(navController.graph.startDestinationId) {
-                    inclusive = true
+        Button(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(90.dp)
+                    .padding(16.dp),
+            onClick = {
+                navController?.navigate("menu") {
+                    popUpTo(navController.graph.startDestinationId) {
+                        inclusive = true
+                    }
                 }
-            }
-        }) {
+            },
+        ) {
             Text("닫기", fontSize = 20.sp)
         }
-
     }
 }

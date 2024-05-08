@@ -19,17 +19,16 @@ import com.wooyj.ordermenu.ui.screen.MenuOptionScreen
 fun OrderMenuNavHost(
     navController: NavHostController,
     startDestination: String,
-    modifier: Modifier
+    modifier: Modifier = Modifier,
 ) {
     NavHost(
         navController = navController,
         startDestination = startDestination,
-        modifier = modifier
+        modifier = modifier,
     ) {
         orderMenuGraph(navController)
     }
 }
-
 
 fun NavGraphBuilder.orderMenuGraph(navController: NavController) {
     composable("menu") {
@@ -40,26 +39,31 @@ fun NavGraphBuilder.orderMenuGraph(navController: NavController) {
     }
     composable(
         "menu/select/{menuType}",
-        arguments = listOf(navArgument("menuType") {
-            type = NavTypeMenu()
-        })
+        arguments =
+            listOf(
+                navArgument("menuType") {
+                    type = NavTypeMenu()
+                },
+            ),
     ) { backStackEntry ->
         val menuType = backStackEntry.arguments?.getParcelable<MenuType>("menuType")
         MenuOptionScreen(navController = navController, menu = menuType!!)
     }
     composable(
-        "menuConfirm/result={result}&menuName={menuName}&price={price}", arguments = listOf(
-            navArgument("result") {
-                type = NavType.StringType
-            },
-            navArgument("menuName") {
-                type = NavType.StringType
-            },
-            navArgument("price") {
-                type = NavType.IntType
-            }
-
-        )) { backStackEntry ->
+        "menuConfirm/result={result}&menuName={menuName}&price={price}",
+        arguments =
+            listOf(
+                navArgument("result") {
+                    type = NavType.StringType
+                },
+                navArgument("menuName") {
+                    type = NavType.StringType
+                },
+                navArgument("price") {
+                    type = NavType.IntType
+                },
+            ),
+    ) { backStackEntry ->
 
         val result =
             backStackEntry.arguments?.getString("result")
@@ -70,8 +74,7 @@ fun NavGraphBuilder.orderMenuGraph(navController: NavController) {
             navController = navController,
             result = result,
             menuName = menuName!!,
-            price = price!!
+            price = price!!,
         )
     }
-
 }
