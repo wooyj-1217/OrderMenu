@@ -29,10 +29,16 @@ import com.wooyj.ordermenu.utils.addCommasToNumber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuConfirmScreen(navController: NavController, result: String?, menuName: String, price: Int) {
+fun MenuConfirmScreen(
+    navController: NavController,
+    result: String?,
+    menuName: String,
+    price: Int,
+    modifier: Modifier = Modifier
+) {
     OrderMenuTheme {
         Scaffold(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize(),
             topBar = {
                 TopAppBar(title = {}, navigationIcon = {
                     IconButton(onClick = {
@@ -48,7 +54,13 @@ fun MenuConfirmScreen(navController: NavController, result: String?, menuName: S
             },
             content =
             {
-                MenuConfirmUI(Modifier.padding(it), navController, result, menuName, price)
+                MenuConfirmUI(
+                    modifier = Modifier.padding(it),
+                    navController = navController,
+                    result = result,
+                    menuName = menuName,
+                    price = price
+                )
             })
     }
 }
@@ -57,7 +69,7 @@ fun MenuConfirmScreen(navController: NavController, result: String?, menuName: S
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun PreviewMenuConfirmScreen() {
+private fun PreviewMenuConfirmScreen() {
     OrderMenuTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -71,11 +83,11 @@ fun PreviewMenuConfirmScreen() {
             content =
             {
                 MenuConfirmUI(
-                    Modifier.padding(it),
-                    null,
-                    "ICE/디카페인/얼음(적게)",
-                    "아메리카노",
-                    1000
+                    modifier = Modifier.padding(it),
+                    navController = null,
+                    result = "ICE/디카페인/얼음(적게)",
+                    menuName = "아메리카노",
+                    price = 1000
                 )
             })
     }
@@ -84,11 +96,11 @@ fun PreviewMenuConfirmScreen() {
 
 @Composable
 fun MenuConfirmUI(
-    modifier: Modifier,
     navController: NavController?,
     result: String?,
     menuName: String,
-    price: Int
+    price: Int,
+    modifier: Modifier = Modifier
 ) {
     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
         Row(

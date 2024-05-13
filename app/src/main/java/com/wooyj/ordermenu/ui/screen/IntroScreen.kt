@@ -18,14 +18,17 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.wooyj.ordermenu.ui.theme.OrderMenuTheme
 
+
+// Modifiers are the beating heart of Compose UI.
+// They encapsulate the idea of composition over inheritance, by allowing developers to attach logic and behavior to layouts.
 @Composable
-fun IntroScreen(navController: NavController) {
+fun IntroScreen(navController: NavController, modifier : Modifier = Modifier) {
     OrderMenuTheme {
         // A surface container using the 'background' color from the theme
         Surface(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize(),
         ) {
-            IntroUI(navController)
+            IntroUI(navController = navController)
         }
     }
 }
@@ -33,20 +36,20 @@ fun IntroScreen(navController: NavController) {
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun PreviewIntroScreen() {
+private fun PreviewIntroScreen() {
     OrderMenuTheme {
         // A surface container using the 'background' color from the theme
         Surface(
             modifier = Modifier.fillMaxSize(),
         ) {
-            IntroUI(null)
+            IntroUI(navController = null)
         }
     }
 }
 
 @Composable
-fun IntroUI(navController: NavController?) {
-    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
+fun IntroUI(navController: NavController?, modifier: Modifier = Modifier) {
+    Column(modifier = modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
         Column(modifier = Modifier.padding(start = 16.dp, top = 80.dp)) {
             Text(
                 text = "반가워요",

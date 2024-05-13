@@ -1,6 +1,5 @@
 package com.wooyj.ordermenu.ui.screen
 
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -26,18 +25,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.google.gson.GsonBuilder
-import com.wooyj.ordermenu.ui.theme.OrderMenuTheme
 import com.wooyj.ordermenu.data.MenuType
 import com.wooyj.ordermenu.data.menuList
+import com.wooyj.ordermenu.ui.theme.OrderMenuTheme
 import com.wooyj.ordermenu.utils.addCommasToNumber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuListScreen(navController: NavController) {
+fun MenuListScreen(navController: NavController, modifier: Modifier = Modifier) {
     OrderMenuTheme {
         Scaffold(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize(),
             topBar = {
                 TopAppBar(title = {}, navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
@@ -47,7 +45,11 @@ fun MenuListScreen(navController: NavController) {
             },
             content =
             {
-                MenuListUI(Modifier.padding(it), navController, menuList)
+                MenuListUI(
+                    navController = navController,
+                    list = menuList,
+                    modifier = Modifier.padding(it)
+                )
 
             })
     }
@@ -56,7 +58,7 @@ fun MenuListScreen(navController: NavController) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun PreviewMenuListScreen() {
+private fun PreviewMenuListScreen() {
     OrderMenuTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -69,22 +71,26 @@ fun PreviewMenuListScreen() {
             },
             content =
             {
-                MenuListUI(Modifier.padding(it), null, menuList)
+                MenuListUI(modifier = Modifier.padding(it), navController = null, list = menuList)
             })
     }
 }
 
 @Composable
-fun MenuListUI(modifier: Modifier, navController: NavController?, list: List<MenuType>) {
+fun MenuListUI(
+    navController: NavController?,
+    list: List<MenuType>,
+    modifier: Modifier = Modifier
+) {
 
     val groupedMap = list.groupBy { it.javaClass.simpleName }
     LazyColumn(modifier.fillMaxSize()) {
         groupedMap.forEach { header, list ->
             item {
                 MenuItem(header = header, list = list, onMenuClick = { menu ->
-                    val menuType = Uri.encode(GsonBuilder().create().toJson(menu))
 
-                    navController?.navigate("menu/select/${menuType}")
+//                    val menuType = Uri.encode(GsonBuilder().create().toJson(menu))
+//                    navController?.navigate("menu/select/${menuType}")
                 })
                 Divider(
                     modifier = Modifier
@@ -98,8 +104,13 @@ fun MenuListUI(modifier: Modifier, navController: NavController?, list: List<Men
 
 
 @Composable
-fun MenuItem(header: String, list: List<MenuType>, onMenuClick: (MenuType) -> Unit) {
-    Column {
+fun MenuItem(
+    header: String,
+    list: List<MenuType>,
+    onMenuClick: (MenuType) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier) {
         MenuItemHeader(header = header)
         list.forEachIndexed { index, menuType ->
             MenuItemDetail(menuType, onMenuClick)
@@ -117,9 +128,9 @@ fun MenuItem(header: String, list: List<MenuType>, onMenuClick: (MenuType) -> Un
 
 
 @Composable
-fun MenuItemHeader(header: String) {
+fun MenuItemHeader(header: String, modifier: Modifier = Modifier) {
     Column(
-        Modifier
+        modifier
             .fillMaxWidth()
             .height(40.dp)
             .padding(start = 16.dp),
@@ -130,9 +141,9 @@ fun MenuItemHeader(header: String) {
 }
 
 @Composable
-fun MenuItemDetail(item: MenuType, onMenuClick: (MenuType) -> Unit) {
+fun MenuItemDetail(item: MenuType, onMenuClick: (MenuType) -> Unit, modifier : Modifier= Modifier) {
     Column(
-        Modifier
+        modifier
             .fillMaxWidth()
             .height(80.dp)
             .clickable { onMenuClick(item) }

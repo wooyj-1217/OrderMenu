@@ -40,10 +40,10 @@ import com.wooyj.ordermenu.utils.addCommasToNumber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuOptionScreen(navController: NavController, menu: MenuType) {
+fun MenuOptionScreen(navController: NavController, menu: MenuType, modifier: Modifier = Modifier) {
     OrderMenuTheme {
         Scaffold(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize(),
             topBar = {
                 TopAppBar(title = {}, navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
@@ -53,7 +53,11 @@ fun MenuOptionScreen(navController: NavController, menu: MenuType) {
             },
             content =
             {
-                MenuOptionUI(Modifier.padding(it), navController, menu)
+                MenuOptionUI(
+                    navController = navController,
+                    menu = menu,
+                    modifier = Modifier.padding(it)
+                )
             })
     }
 }
@@ -61,13 +65,13 @@ fun MenuOptionScreen(navController: NavController, menu: MenuType) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun PreviewMenuOptionScreen() {
+private fun PreviewMenuOptionScreen() {
     OrderMenuTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
                 TopAppBar(title = {}, navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
                 })
@@ -75,9 +79,11 @@ fun PreviewMenuOptionScreen() {
             content =
             {
                 MenuOptionUI(
-                    Modifier.padding(it),
-                    null,
-                    MenuType.Beverage("망고에이드", 2500, listOf(TempOption.Ice))
+                    navController = null,
+                    menu = MenuType.Beverage(
+                        "망고에이드", 2500, listOf(TempOption.Ice)
+                    ),
+                    modifier = Modifier.padding(it)
                 )
             })
     }
@@ -85,7 +91,7 @@ fun PreviewMenuOptionScreen() {
 
 
 @Composable
-fun MenuOptionUI(modifier: Modifier, navController: NavController?, menu: MenuType) {
+fun MenuOptionUI(navController: NavController?, menu: MenuType, modifier: Modifier = Modifier) {
 
     var optionTemp by remember {
         mutableStateOf(
@@ -101,9 +107,11 @@ fun MenuOptionUI(modifier: Modifier, navController: NavController?, menu: MenuTy
 
 
     Column(modifier = modifier, verticalArrangement = Arrangement.SpaceBetween) {
-        Column(modifier = modifier
-            .padding(start = 20.dp, top = 60.dp, end = 20.dp)
-            .weight(1f)) {
+        Column(
+            modifier = Modifier
+                .padding(start = 20.dp, top = 60.dp, end = 20.dp)
+                .weight(1f)
+        ) {
             Text(menu.menuName)
             Text("${menu.price.addCommasToNumber()}원")
             Spacer(modifier = Modifier.height(40.dp))
@@ -186,18 +194,24 @@ fun MenuOption(
     options: List<String>,
     title: String,
     option: String,
-    onChanged: (String) -> Unit
+    onChanged: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Column {
+    Column(modifier = modifier) {
         Text(title)
-        ToggleButtonGroup(options, option, onChanged)
+        ToggleButtonGroup(optionList = options, option = option, onChanged = onChanged)
     }
 }
 
 @Composable
-fun ToggleButtonGroup(optionList: List<String>, option: String, onChanged: (String) -> Unit) {
+fun ToggleButtonGroup(
+    optionList: List<String>,
+    option: String,
+    onChanged: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(60.dp),
         verticalAlignment = Alignment.CenterVertically

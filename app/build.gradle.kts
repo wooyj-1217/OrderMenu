@@ -54,11 +54,16 @@ android {
 
 dependencies {
 
+    // Compose Lint : Compose Code Style 일관성을 위함
+    lintChecks("com.slack.lint.compose:compose-lint-checks:1.3.1")
+
     implementation("androidx.navigation:navigation-compose:2.7.7")
     implementation("com.google.dagger:hilt-android:2.44")
     kapt("com.google.dagger:hilt-android-compiler:2.44")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    implementation("com.google.code.gson:gson:2.10.1")
+
+    //TODO("왜 안쓰게 된건가요..? 그리고 serializable으로 바꿔야 하는 이유는 무엇인가요?")
+//    implementation("com.google.code.gson:gson:2.10.1")
 
 
     implementation(libs.androidx.core.ktx)
