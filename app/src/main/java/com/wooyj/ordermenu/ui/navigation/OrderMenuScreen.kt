@@ -1,5 +1,6 @@
 package com.wooyj.ordermenu.ui.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
@@ -9,6 +10,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import com.wooyj.ordermenu.data.CaffeineOption
 import com.wooyj.ordermenu.data.IceOption
@@ -79,14 +81,15 @@ fun NavGraphBuilder.orderMenuGraph(navController: NavController) {
 //    }
     composable(
         route = "menu/select/{orderOption}",
+//        route = "menu/select",
         arguments = listOf(navArgument("orderOption") {
             type = NavTypeOrderOption
         })
     ) { backStackEntry ->
+        val data = backStackEntry.arguments?.getParcelable<OrderOption>("orderOption")
+        Log.d("OrderMenuScreen","$data")
         MenuOptionScreen(navController = navController)
     }
-
-
     composable(
         route = "menuConfirm/{orderOption}",
         arguments = listOf(navArgument("orderOption") {

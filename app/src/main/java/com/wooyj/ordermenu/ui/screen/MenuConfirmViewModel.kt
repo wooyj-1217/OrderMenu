@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MenuConfirmViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private var _uiState = MutableStateFlow<UiState<OrderOption>>(UiState.Loading)
@@ -24,7 +24,6 @@ class MenuConfirmViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             val orderOption = savedStateHandle.get<OrderOption>("orderOption")
-//            val orderOption = savedStateHandle.toRoute<OrderOption>()
             Log.d("OrderOption", "$orderOption")
             if (orderOption != null) {
                 _uiState.value = UiState.Success(data = orderOption)

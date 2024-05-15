@@ -28,19 +28,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.os.bundleOf
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.wooyj.ordermenu.data.MenuType
 import com.wooyj.ordermenu.data.OrderOption
-import com.wooyj.ordermenu.data.menuTypeJson
+import com.wooyj.ordermenu.data.orderOptionJson
+import com.wooyj.ordermenu.ui.navigation.NavTypeOrderOption
 import com.wooyj.ordermenu.ui.state.UiState
 import com.wooyj.ordermenu.ui.theme.OrderMenuTheme
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,6 +68,19 @@ fun MenuListScreen(navController: NavController, modifier: Modifier = Modifier) 
                         // solved. @Transient 를 name과 price에만 주면 해결됨.
                         // 참고 : https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/polymorphism.md#designing-serializable-hierarchy
 
+                        val orderOption = OrderOption(
+                            menuType = menu,
+                            tempOption = if (menu.listTempOption.isNotEmpty()) {
+                                menu.listTempOption[0]
+                            } else null,
+                            caffeineOption = if (menu.listCaffeineOption.isNotEmpty()) {
+                                menu.listCaffeineOption[0]
+                            } else null,
+                            iceOption = if (menu.listIceOption.isNotEmpty()) {
+                                menu.listIceOption[0]
+                            } else null
+                        )
+
 //                        Log.d(
 //                            "MenuListScreen",
 //                            menuTypeJson.encodeToString(MenuType.serializer(), menu)
@@ -78,47 +88,44 @@ fun MenuListScreen(navController: NavController, modifier: Modifier = Modifier) 
 //                        val menuType =
 //                            Uri.encode(menuTypeJson.encodeToString(MenuType.serializer(), menu))
 //                        navController.navigate(route = "menu/select/${menuType}")
-
-                        //이렇게 삽질했는데...
                         //https://medium.com/@edmiro/type-safety-in-navigation-compose-23c03e3d74a5
 //                                  navController.navigate(menu)
 //                        navController.navigate(
-//                            OrderOption(
-//                                menuType = menu,
-//                                tempOption = if (menu.listTempOption.isNotEmpty()) {
-//                                    menu.listTempOption[0]
-//                                } else null,
-//                                caffeineOption = if (menu.listCaffeineOption.isNotEmpty()) {
-//                                    menu.listCaffeineOption[0]
-//                                } else null,
-//                                iceOption = if (menu.listIceOption.isNotEmpty()) {
-//                                    menu.listIceOption[0]
-//                                } else null
-//                            )
+//                            orderOption
 //                        )
 
+//                        val serializeEncodeString = menuTypeJson.encodeToString(
+//                            OrderOption.serializer(),
+//                            orderOption
+//                        )
+//                        Log.d("screen navigation", "$serializeEncodeString")
+//                        val encoded = URLEncoder.encode(
+//                            NavTypeOrderOption.serializeAsValue(orderOption), StandardCharsets.UTF_8.toString()
+//                        )
+                        val encoded = Uri.encode(
+                            NavTypeOrderOption.serializeAsValue(orderOption)
+                        )
 
-                        val serializeEncodeString = menuTypeJson.encodeToString(
-                            OrderOption.serializer(),
-                            OrderOption(
-                                menuType = menu,
-                                tempOption = if (menu.listTempOption.isNotEmpty()) {
-                                    menu.listTempOption[0]
-                                } else null,
-                                caffeineOption = if (menu.listCaffeineOption.isNotEmpty()) {
-                                    menu.listCaffeineOption[0]
-                                } else null,
-                                iceOption = if (menu.listIceOption.isNotEmpty()) {
-                                    menu.listIceOption[0]
-                                } else null
-                            )
+                        Log.d("screen navigation / url encoded", encoded)
+                        val decoded = Uri.decode(encoded)
+                        Log.d("screen navigation / url decoded", decoded)
+                        //TODO("decode 하니까 Price가 두번 생성되고 두번째 price는 0임. 그래서 안넘어가지는건데...아 이거 왜이러는거죠...ㅠㅠ?????")
+                        Log.d(
+                            "screen navigation / OrderOption", "${
+                                orderOptionJson.decodeFromString(OrderOption.serializer(),decoded)
+                            }"
                         )
-                        Log.d("screen navigation", "$serializeEncodeString")
-                        val orderOption = URLEncoder.encode(
-                            serializeEncodeString, StandardCharsets.UTF_8.toString()
-                        )
-                        Log.d("screen navigation / url encoded", "$orderOption")
-                        navController.navigate(route = "menu/select/$orderOption")
+
+
+                        //이또한..ㅠㅠㅋㅋ
+//                        navController.currentBackStackEntry?.savedStateHandle?.apply {
+//                            set(
+//                                "orderOption", orderOption
+//                            )
+//                        }
+//                        navController.navigate(route = "menu/select/${NavTypeOrderOption.serializeAsValue(orderOption)}")
+//                        navController.navigate(route = "menu/select")
+                        navController.navigate(route = "menu/select/$encoded")
 
                     },
                     viewModel = hiltViewModel()

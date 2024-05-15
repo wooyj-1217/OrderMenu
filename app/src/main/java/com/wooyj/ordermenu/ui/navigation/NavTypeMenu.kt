@@ -1,15 +1,18 @@
 package com.wooyj.ordermenu.ui.navigation
 
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.navigation.NavType
+import com.wooyj.ordermenu.data.CaffeineOption
+import com.wooyj.ordermenu.data.IceOption
 import com.wooyj.ordermenu.data.MenuType
 import com.wooyj.ordermenu.data.OrderOption
 import com.wooyj.ordermenu.data.Price
 import com.wooyj.ordermenu.data.TempOption
 import com.wooyj.ordermenu.data.menuTypeJson
-import kotlinx.serialization.decodeFromString
+import com.wooyj.ordermenu.data.orderOptionJson
 import kotlinx.serialization.json.Json
 
 val NavTypeMenu = object : NavType<MenuType>(isNullableAllowed = false) {
@@ -51,23 +54,35 @@ val NavTypeOrderOption = object : NavType<OrderOption>(isNullableAllowed = true)
     }
 
     override fun parseValue(value: String): OrderOption {
-        Log.d("parseValue" ,  value)
-        val result =  Json.decodeFromString<OrderOption>(value)
-        Log.d("result", "$result")
-        return Json.decodeFromString<OrderOption>(value)
+        Log.d("parseValue", value)
 
+        //여기서 발생한 이슈인데 java.lang.IllegalArgumentException: Navigation destination that matches request NavDeepLinkRequest가 뜨는구나?;;;
+//        val result = Json.decodeFromString(OrderOption.serializer(), value)
+        val decoded = Uri.decode(value)
+        Log.d("uriDecode", "$decoded")
+        Log.d("parseValue/price", "${orderOptionJson.decodeFromString(OrderOption.serializer(), decoded)}")
+
+//        return Json.decodeFromString<OrderOption>(value)
         // 이렇게 넘겼을때도 java.lang.IllegalArgumentException: Navigation destination that matches request NavDeepLinkRequest가 뜨는건 머선일..?
-//        return OrderOption(MenuType.Coffee("아메리카노", Price(1000)), null, null, null)
+//        return OrderOption(
+//            MenuType.Coffee("아메리카노", Price(1000)),
+//            tempOption = TempOption.Hot,
+//            caffeineOption = CaffeineOption.Caffeine,
+//            iceOption = IceOption.Small
+//        )
+        return orderOptionJson.decodeFromString(OrderOption.serializer(), decoded)
     }
 
     override fun put(bundle: Bundle, key: String, value: OrderOption) {
-        Log.d("put" ,  "$value")
+        Log.d("put", "$value")
         return bundle.putParcelable(key, value)
     }
 
-//    override fun serializeAsValue(value: OrderOption): String {
-//        return Json.encodeToString(OrderOption.serializer(), value)
-//    }
+    override fun serializeAsValue(value: OrderOption): String {
+        Log.d("NavTypeOrderOption", Json.encodeToString(OrderOption.serializer(), value))
+        return orderOptionJson.encodeToString(OrderOption.serializer(), value)
+    }
+
 }
 
 
@@ -92,6 +107,7 @@ inline fun <reified T : Enum<T>> NavTypeEnum(isNullableAllowed: Boolean = true) 
         override fun get(bundle: Bundle, key: String): T? {
             return bundle.getString(key)?.let { java.lang.Enum.valueOf(T::class.java, it) }
         }
+
         //TODO("대체 왜 java.lang.을 때면 valueOf() function을 못찾는걸까요..?")
         override fun parseValue(value: String): T {
             return java.lang.Enum.valueOf(T::class.java, value)

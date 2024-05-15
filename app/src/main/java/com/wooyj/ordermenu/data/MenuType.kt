@@ -2,12 +2,20 @@ package com.wooyj.ordermenu.data
 
 import android.os.Parcel
 import android.os.Parcelable
+import android.util.Log
 import kotlinx.parcelize.Parceler
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.contextual
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import java.text.NumberFormat
@@ -45,16 +53,16 @@ enum class IceOption {
 }
 
 
-@Serializable
+@Serializable(with = PriceSerializer::class)
 @Parcelize
 @JvmInline
 value class Price(val value: Int) : Parcelable {
     init {
-        require(value > 0) { "값은 항상 0보다 커야 합니다." }
+        Log.d("Price", "$value")
+//        require(value > 0) { "값은 항상 0보다 커야 합니다." }
     }
 
-    constructor(parcel: Parcel) : this(parcel.readInt()) {
-    }
+    constructor(parcel: Parcel) : this(parcel.readInt())
 
     fun addCommasToNumber(): String {
         val format = NumberFormat.getNumberInstance(Locale.getDefault())
@@ -73,6 +81,19 @@ value class Price(val value: Int) : Parcelable {
     }
 }
 
+object PriceSerializer : KSerializer<Price> {
+    override val descriptor: SerialDescriptor =
+        PrimitiveSerialDescriptor("Price", PrimitiveKind.INT)
+
+    override fun serialize(encoder: Encoder, value: Price) {
+        encoder.encodeInt(value.value)
+    }
+
+    override fun deserialize(decoder: Decoder): Price {
+        val int = decoder.decodeInt()
+        return Price(int)
+    }
+}
 
 // DTO(Data Transfer Object)
 @Serializable
@@ -157,8 +178,10 @@ sealed class MenuType(
 //         Please ensure that class is marked as '@Serializable' and that the serialization compiler plugin is applied.
 // 해당 에러 관련해서 sealed class는 serialize를 자동변환해주지 않는건가 하고 찾아보니 이런게 있긴 함.
 // https://kotlinlang.org/api/kotlinx.serialization/kotlinx-serialization-core/kotlinx.serialization/-sealed-class-serializer/
+// https://stackoverflow.com/questions/74550841/kotlin-serialization-of-value-class-that-implements-a-sealed-interface
 // 모듈 설정
 val menuTypeSerializersModule = SerializersModule {
+    contextual(Price::class, PriceSerializer)
     polymorphic(MenuType::class) {
         subclass(MenuType.Coffee::class)
         subclass(MenuType.Beverage::class)
@@ -169,6 +192,10 @@ val menuTypeSerializersModule = SerializersModule {
 
 // json에 넣음
 val menuTypeJson = Json { serializersModule = menuTypeSerializersModule }
+
+val orderOptionJson = Json {
+    serializersModule = menuTypeSerializersModule
+}
 
 val menuList = listOf(
     MenuType.Coffee("아메리카노", Price(1000)),

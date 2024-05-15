@@ -1,5 +1,6 @@
 package com.wooyj.ordermenu.ui.screen
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,14 +31,25 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.wooyj.ordermenu.data.MenuType
 import com.wooyj.ordermenu.data.OrderOption
+import com.wooyj.ordermenu.data.TempOption
+import com.wooyj.ordermenu.ui.navigation.NavTypeOrderOption
 import com.wooyj.ordermenu.ui.state.UiState
 import com.wooyj.ordermenu.ui.theme.OrderMenuTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuOptionScreen(navController: NavController, modifier: Modifier = Modifier) {
+    //잘 받아오는데 뷰모델 savedStateHandle은 왜 안받아오냐...? 무슨일이야..?
+//    Log.d(
+//        "MenuOptionScreen",
+//        "${navController.previousBackStackEntry?.savedStateHandle?.get<OrderOption>("orderOption")}"
+//    )
+//    Log.d(
+//        "MenuOptionScreen",
+//        "${navController.previousBackStackEntry?.savedStateHandle?.get<OrderOption>("orderOption")?.menuType?.menuName}"
+//    )
+//    Log.d("MenuOptionScreen","${navController.previousBackStackEntry?.savedStateHandle}")
     OrderMenuTheme {
         Scaffold(
             modifier = modifier.fillMaxSize(),
@@ -52,7 +64,13 @@ fun MenuOptionScreen(navController: NavController, modifier: Modifier = Modifier
             {
                 MenuOptionUI(
                     modifier = Modifier.padding(it),
-                    viewModel = hiltViewModel()
+                    viewModel = hiltViewModel<MenuOptionViewModel>(),
+                    onNextClick = {option ->
+                        val encoded = Uri.encode(
+                            NavTypeOrderOption.serializeAsValue(option)
+                        )
+                        navController.navigate("menuConfirm/$encoded")
+                    }
                 )
             })
     }
@@ -75,7 +93,7 @@ private fun PreviewMenuOptionScreen() {
             content =
             {
                 MenuOptionUI(
-                    modifier = Modifier.padding(it)
+                    modifier = Modifier.padding(it), onNextClick = { _ -> }
                 )
             })
     }
@@ -86,20 +104,22 @@ private fun PreviewMenuOptionScreen() {
 fun MenuOptionUI(
     modifier: Modifier = Modifier,
     viewModel: MenuOptionViewModel = viewModel(),
+    onNextClick: (OrderOption) -> Unit
 ) {
 
     val uiState by viewModel.uiState.collectAsState()
 
     when (uiState) {
         is UiState.Success -> {
+            val order = (uiState as UiState.Success<OrderOption>).data
+            val menu = order.menuType
+
             Column(modifier = modifier, verticalArrangement = Arrangement.SpaceBetween) {
                 Column(
                     modifier = Modifier
                         .padding(start = 20.dp, top = 60.dp, end = 20.dp)
                         .weight(1f)
                 ) {
-                    val order = (uiState as UiState.Success<OrderOption>).data
-                    val menu = order.menuType
                     Text(menu.menuName)
                     Text("${menu.price.addCommasToNumber()}원")
                     Spacer(modifier = Modifier.height(40.dp))
@@ -114,14 +134,14 @@ fun MenuOptionUI(
                     if (menu.listCaffeineOption.isNotEmpty()) {
                         MenuOption(
                             options = menu.listCaffeineOption,
-                            title = "기본",
+                            title = "디카페인",
                             option = order.caffeineOption!!,
                             onChanged = { caffeine -> viewModel.clickCaffeineOption(caffeine) })
                     }
-                    if (menu.listIceOption.isNotEmpty()) {
+                    if (order.tempOption != TempOption.Hot && menu.listIceOption.isNotEmpty()) {
                         MenuOption(
                             options = menu.listIceOption,
-                            title = "",
+                            title = "얼음",
                             option = order.iceOption!!,
                             onChanged = { ice -> viewModel.clickIceOption(ice) }
                         )
@@ -131,22 +151,8 @@ fun MenuOptionUI(
                 Button(modifier = Modifier
                     .fillMaxWidth()
                     .height(90.dp)
-                    .padding(16.dp), onClick = {
-//                    val options = mutableListOf<String>()
-//            if (optionTemp != "") {
-//                options.add(optionTemp)
-//            }
-//            if (optionCaffein != "") {
-//                options.add(optionCaffein)
-//            }
-//            if (optionIce != "") {
-//                options.add("얼음($optionIce)")
-//            }
-//            options.joinToString(",")
-//                    navController?.navigate(
-//                        "menuConfirm/result=${options}&menuName=${menu.menuName}&price=${menu.price}"
-//                    )
-                }
+                    .padding(16.dp),
+                    onClick = { onNextClick(order) }
                 ) {
                     Text("다음", fontSize = 20.sp)
                 }

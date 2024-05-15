@@ -32,9 +32,16 @@ class MenuOptionViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+            Log.d("MenuOptionViewModel", "$savedStateHandle")
+            // hilt로 주입받은 savedStateHandle과 navController.previousBackStackEntry.savedStateHandle은 다르네
+            //      2024-05-15 13:43:51.741   856-856   MenuOptionScreen        com.wooyj.ordermenu                  D  androidx.lifecycle.SavedStateHandle@b8a5a90
+            //      2024-05-15 13:43:51.858   856-856   MenuOptionViewModel     com.wooyj.ordermenu                  D  androidx.lifecycle.SavedStateHandle@d63203f
+            // hilt로 주입받은 savedStateHandle은 null을 계속 뱉어냄.
+            // * 동일증상
+            // @see https://stackoverflow.com/questions/76892268/jetpack-compose-sending-result-back-with-savedstatehandle-does-not-work-with-sav
             val orderOption = savedStateHandle.get<OrderOption>("orderOption")
 //            val orderOption = savedStateHandle.toRoute<OrderOption>()
-            Log.d("OrderOption", "$orderOption")
+            Log.d("MenuOptionViewModel", "$orderOption")
             if (orderOption != null) {
                 _uiState.value = UiState.Success(data = orderOption)
             } else {
@@ -49,7 +56,8 @@ class MenuOptionViewModel @Inject constructor(
             _uiState.update {
                 (it as UiState.Success<OrderOption>).copy(
                     data = (uiState.value as UiState.Success<OrderOption>).data.copy(
-                        tempOption = tempOption
+                        tempOption = tempOption,
+                        iceOption = if (tempOption == TempOption.Hot) null else IceOption.Small
                     )
                 )
             }
