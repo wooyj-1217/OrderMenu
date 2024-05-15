@@ -35,7 +35,7 @@ import com.wooyj.ordermenu.ui.theme.OrderMenuTheme
 @Composable
 fun MenuConfirmScreen(
     navController: NavController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     OrderMenuTheme {
         Scaffold(
@@ -54,22 +54,22 @@ fun MenuConfirmScreen(
                 })
             },
             content =
-            {
-                MenuConfirmUI(
-                    modifier = Modifier.padding(it),
-                    viewModel = hiltViewModel(),
-                    onCloseButtonClicked = {
-                        navController?.navigate("menu") {
-                            popUpTo(navController.graph.startDestinationId) {
-                                inclusive = true
+                {
+                    MenuConfirmUI(
+                        modifier = Modifier.padding(it),
+                        viewModel = hiltViewModel(),
+                        onCloseButtonClicked = {
+                            navController?.navigate("menu") {
+                                popUpTo(navController.graph.startDestinationId) {
+                                    inclusive = true
+                                }
                             }
-                        }
-                    }
-                )
-            })
+                        },
+                    )
+                },
+        )
     }
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showSystemUi = true, showBackground = true)
@@ -86,23 +86,22 @@ private fun PreviewMenuConfirmScreen() {
                 })
             },
             content =
-            {
-                MenuConfirmUI(
-                    modifier = Modifier.padding(it),
-                    onCloseButtonClicked = {}
-                )
-            })
+                {
+                    MenuConfirmUI(
+                        modifier = Modifier.padding(it),
+                        onCloseButtonClicked = {},
+                    )
+                },
+        )
     }
 }
-
 
 @Composable
 fun MenuConfirmUI(
     modifier: Modifier = Modifier,
     viewModel: MenuConfirmViewModel = viewModel(),
-    onCloseButtonClicked: () -> Unit
+    onCloseButtonClicked: () -> Unit,
 ) {
-
     val uiState by viewModel.uiState.collectAsState()
 
     when (uiState) {
@@ -110,14 +109,15 @@ fun MenuConfirmUI(
             val data = (uiState as UiState.Success<OrderOption>).data
             Column(
                 modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.SpaceBetween
+                verticalArrangement = Arrangement.SpaceBetween,
             ) {
                 Row(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp),
+                    modifier =
+                        modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Column {
                         Text(data.menuType.menuName)
@@ -126,11 +126,12 @@ fun MenuConfirmUI(
                     Text("${data.menuType.price.addCommasToNumber()}원")
                 }
                 Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(90.dp)
-                        .padding(16.dp),
-                    onClick = onCloseButtonClicked
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .height(90.dp)
+                            .padding(16.dp),
+                    onClick = onCloseButtonClicked,
                 ) {
                     Text("닫기", fontSize = 20.sp)
                 }
@@ -140,5 +141,4 @@ fun MenuConfirmUI(
         is UiState.Error -> {}
         is UiState.Loading -> {}
     }
-
 }

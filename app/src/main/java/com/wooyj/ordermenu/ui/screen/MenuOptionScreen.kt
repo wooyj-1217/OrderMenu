@@ -39,8 +39,11 @@ import com.wooyj.ordermenu.ui.theme.OrderMenuTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuOptionScreen(navController: NavController, modifier: Modifier = Modifier) {
-    //잘 받아오는데 뷰모델 savedStateHandle은 왜 안받아오냐...? 무슨일이야..?
+fun MenuOptionScreen(
+    navController: NavController,
+    modifier: Modifier = Modifier,
+) {
+    // 잘 받아오는데 뷰모델 savedStateHandle은 왜 안받아오냐...? 무슨일이야..?
 //    Log.d(
 //        "MenuOptionScreen",
 //        "${navController.previousBackStackEntry?.savedStateHandle?.get<OrderOption>("orderOption")}"
@@ -61,18 +64,20 @@ fun MenuOptionScreen(navController: NavController, modifier: Modifier = Modifier
                 })
             },
             content =
-            {
-                MenuOptionUI(
-                    modifier = Modifier.padding(it),
-                    viewModel = hiltViewModel<MenuOptionViewModel>(),
-                    onNextClick = {option ->
-                        val encoded = Uri.encode(
-                            NavTypeOrderOption.serializeAsValue(option)
-                        )
-                        navController.navigate("menuConfirm/$encoded")
-                    }
-                )
-            })
+                {
+                    MenuOptionUI(
+                        modifier = Modifier.padding(it),
+                        viewModel = hiltViewModel<MenuOptionViewModel>(),
+                        onNextClick = { option ->
+                            val encoded =
+                                Uri.encode(
+                                    NavTypeOrderOption.serializeAsValue(option),
+                                )
+                            navController.navigate("menuConfirm/$encoded")
+                        },
+                    )
+                },
+        )
     }
 }
 
@@ -91,22 +96,22 @@ private fun PreviewMenuOptionScreen() {
                 })
             },
             content =
-            {
-                MenuOptionUI(
-                    modifier = Modifier.padding(it), onNextClick = { _ -> }
-                )
-            })
+                {
+                    MenuOptionUI(
+                        modifier = Modifier.padding(it),
+                        onNextClick = { _ -> },
+                    )
+                },
+        )
     }
 }
-
 
 @Composable
 fun MenuOptionUI(
     modifier: Modifier = Modifier,
     viewModel: MenuOptionViewModel = viewModel(),
-    onNextClick: (OrderOption) -> Unit
+    onNextClick: (OrderOption) -> Unit,
 ) {
-
     val uiState by viewModel.uiState.collectAsState()
 
     when (uiState) {
@@ -116,9 +121,10 @@ fun MenuOptionUI(
 
             Column(modifier = modifier, verticalArrangement = Arrangement.SpaceBetween) {
                 Column(
-                    modifier = Modifier
-                        .padding(start = 20.dp, top = 60.dp, end = 20.dp)
-                        .weight(1f)
+                    modifier =
+                        Modifier
+                            .padding(start = 20.dp, top = 60.dp, end = 20.dp)
+                            .weight(1f),
                 ) {
                     Text(menu.menuName)
                     Text("${menu.price.addCommasToNumber()}원")
@@ -129,30 +135,34 @@ fun MenuOptionUI(
                             options = menu.listTempOption,
                             title = "기본",
                             option = order.tempOption!!,
-                            onChanged = { temp -> viewModel.clickTempOption(temp) })
+                            onChanged = { temp -> viewModel.clickTempOption(temp) },
+                        )
                     }
                     if (menu.listCaffeineOption.isNotEmpty()) {
                         MenuOption(
                             options = menu.listCaffeineOption,
                             title = "디카페인",
                             option = order.caffeineOption!!,
-                            onChanged = { caffeine -> viewModel.clickCaffeineOption(caffeine) })
+                            onChanged = { caffeine -> viewModel.clickCaffeineOption(caffeine) },
+                        )
                     }
                     if (order.tempOption != TempOption.Hot && menu.listIceOption.isNotEmpty()) {
                         MenuOption(
                             options = menu.listIceOption,
                             title = "얼음",
                             option = order.iceOption!!,
-                            onChanged = { ice -> viewModel.clickIceOption(ice) }
+                            onChanged = { ice -> viewModel.clickIceOption(ice) },
                         )
                     }
                 }
 
-                Button(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(90.dp)
-                    .padding(16.dp),
-                    onClick = { onNextClick(order) }
+                Button(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .height(90.dp)
+                            .padding(16.dp),
+                    onClick = { onNextClick(order) },
                 ) {
                     Text("다음", fontSize = 20.sp)
                 }
@@ -170,7 +180,7 @@ fun <T : Enum<T>> MenuOption(
     title: String,
     option: T,
     onChanged: (T) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
         Text(title)
@@ -183,25 +193,29 @@ fun <T : Enum<T>> ToggleButtonGroup(
     optionList: List<T>,
     option: T,
     onChanged: (T) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(60.dp),
-        verticalAlignment = Alignment.CenterVertically
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(60.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         optionList.forEach {
             Button(
-                modifier = Modifier
-                    .height(60.dp)
-                    .weight(1f)
-                    .padding(4.dp),
+                modifier =
+                    Modifier
+                        .height(60.dp)
+                        .weight(1f)
+                        .padding(4.dp),
                 onClick = {
                     onChanged(it)
-                }, colors = ButtonDefaults.buttonColors(
-                    containerColor = if (it == option) Color.DarkGray else Color.LightGray
-                )
+                },
+                colors =
+                    ButtonDefaults.buttonColors(
+                        containerColor = if (it == option) Color.DarkGray else Color.LightGray,
+                    ),
             ) {
                 Text(it.toString())
             }

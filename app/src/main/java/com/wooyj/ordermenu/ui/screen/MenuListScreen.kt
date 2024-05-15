@@ -38,11 +38,12 @@ import com.wooyj.ordermenu.ui.navigation.NavTypeOrderOption
 import com.wooyj.ordermenu.ui.state.UiState
 import com.wooyj.ordermenu.ui.theme.OrderMenuTheme
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuListScreen(navController: NavController, modifier: Modifier = Modifier) {
-
+fun MenuListScreen(
+    navController: NavController,
+    modifier: Modifier = Modifier,
+) {
     OrderMenuTheme {
         Scaffold(
             modifier = modifier.fillMaxSize(),
@@ -54,32 +55,42 @@ fun MenuListScreen(navController: NavController, modifier: Modifier = Modifier) 
                 })
             },
             content =
-            {
-                MenuListUI(
-                    modifier = Modifier.padding(it),
-                    onMenuClick = { menu ->
-                        //error >> java.lang.IllegalArgumentException: Navigation destination that matches request
-                        // NavDeepLinkRequest{ uri=android-app://androidx.navigation/menu/select/
-                        // {"type":"com.wooyj.ordermenu.data.MenuType.Coffee","menuName":"아메리카노","price":1000} }
-                        // cannot be found in the navigation graph ComposeNavGraph(0x0) startDestination={Destination(0x78da666c) route=menu}
+                {
+                    MenuListUI(
+                        modifier = Modifier.padding(it),
+                        onMenuClick = { menu ->
+                            // error >> java.lang.IllegalArgumentException: Navigation destination that matches request
+                            // NavDeepLinkRequest{ uri=android-app://androidx.navigation/menu/select/
+                            // {"type":"com.wooyj.ordermenu.data.MenuType.Coffee","menuName":"아메리카노","price":1000} }
+                            // cannot be found in the navigation graph ComposeNavGraph(0x0) startDestination={Destination(0x78da666c) route=menu}
 
-                        // log를 보면 {"type":"com.wooyj.ordermenu.data.MenuType.Coffee","menuName":"아메리카노","price":1000} }
-                        // 왜 temp list, caffeine list, ice list는 적용이 안된걸까.
-                        // solved. @Transient 를 name과 price에만 주면 해결됨.
-                        // 참고 : https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/polymorphism.md#designing-serializable-hierarchy
+                            // log를 보면 {"type":"com.wooyj.ordermenu.data.MenuType.Coffee","menuName":"아메리카노","price":1000} }
+                            // 왜 temp list, caffeine list, ice list는 적용이 안된걸까.
+                            // solved. @Transient 를 name과 price에만 주면 해결됨.
+                            // 참고 : https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/polymorphism.md#designing-serializable-hierarchy
 
-                        val orderOption = OrderOption(
-                            menuType = menu,
-                            tempOption = if (menu.listTempOption.isNotEmpty()) {
-                                menu.listTempOption[0]
-                            } else null,
-                            caffeineOption = if (menu.listCaffeineOption.isNotEmpty()) {
-                                menu.listCaffeineOption[0]
-                            } else null,
-                            iceOption = if (menu.listIceOption.isNotEmpty()) {
-                                menu.listIceOption[0]
-                            } else null
-                        )
+                            val orderOption =
+                                OrderOption(
+                                    menuType = menu,
+                                    tempOption =
+                                        if (menu.listTempOption.isNotEmpty()) {
+                                            menu.listTempOption[0]
+                                        } else {
+                                            null
+                                        },
+                                    caffeineOption =
+                                        if (menu.listCaffeineOption.isNotEmpty()) {
+                                            menu.listCaffeineOption[0]
+                                        } else {
+                                            null
+                                        },
+                                    iceOption =
+                                        if (menu.listIceOption.isNotEmpty()) {
+                                            menu.listIceOption[0]
+                                        } else {
+                                            null
+                                        },
+                                )
 
 //                        Log.d(
 //                            "MenuListScreen",
@@ -88,7 +99,7 @@ fun MenuListScreen(navController: NavController, modifier: Modifier = Modifier) 
 //                        val menuType =
 //                            Uri.encode(menuTypeJson.encodeToString(MenuType.serializer(), menu))
 //                        navController.navigate(route = "menu/select/${menuType}")
-                        //https://medium.com/@edmiro/type-safety-in-navigation-compose-23c03e3d74a5
+                            // https://medium.com/@edmiro/type-safety-in-navigation-compose-23c03e3d74a5
 //                                  navController.navigate(menu)
 //                        navController.navigate(
 //                            orderOption
@@ -102,22 +113,23 @@ fun MenuListScreen(navController: NavController, modifier: Modifier = Modifier) 
 //                        val encoded = URLEncoder.encode(
 //                            NavTypeOrderOption.serializeAsValue(orderOption), StandardCharsets.UTF_8.toString()
 //                        )
-                        val encoded = Uri.encode(
-                            NavTypeOrderOption.serializeAsValue(orderOption)
-                        )
+                            val encoded =
+                                Uri.encode(
+                                    NavTypeOrderOption.serializeAsValue(orderOption),
+                                )
 
-                        Log.d("screen navigation / url encoded", encoded)
-                        val decoded = Uri.decode(encoded)
-                        Log.d("screen navigation / url decoded", decoded)
-                        //TODO("decode 하니까 Price가 두번 생성되고 두번째 price는 0임. 그래서 안넘어가지는건데...아 이거 왜이러는거죠...ㅠㅠ?????")
-                        Log.d(
-                            "screen navigation / OrderOption", "${
-                                orderOptionJson.decodeFromString(OrderOption.serializer(),decoded)
-                            }"
-                        )
+                            Log.d("screen navigation / url encoded", encoded)
+                            val decoded = Uri.decode(encoded)
+                            Log.d("screen navigation / url decoded", decoded)
+                            // TODO("decode 하니까 Price가 두번 생성되고 두번째 price는 0임. 그래서 안넘어가지는건데...아 이거 왜이러는거죠...ㅠㅠ?????")
+                            Log.d(
+                                "screen navigation / OrderOption",
+                                "${
+                                    orderOptionJson.decodeFromString(OrderOption.serializer(),decoded)
+                                }",
+                            )
 
-
-                        //이또한..ㅠㅠㅋㅋ
+                            // 이또한..ㅠㅠㅋㅋ
 //                        navController.currentBackStackEntry?.savedStateHandle?.apply {
 //                            set(
 //                                "orderOption", orderOption
@@ -125,13 +137,12 @@ fun MenuListScreen(navController: NavController, modifier: Modifier = Modifier) 
 //                        }
 //                        navController.navigate(route = "menu/select/${NavTypeOrderOption.serializeAsValue(orderOption)}")
 //                        navController.navigate(route = "menu/select")
-                        navController.navigate(route = "menu/select/$encoded")
-
-                    },
-                    viewModel = hiltViewModel()
-                )
-
-            })
+                            navController.navigate(route = "menu/select/$encoded")
+                        },
+                        viewModel = hiltViewModel(),
+                    )
+                },
+        )
     }
 }
 
@@ -150,11 +161,13 @@ private fun PreviewMenuListScreen() {
                 })
             },
             content =
-            {
-                MenuListUI(
-                    modifier = Modifier.padding(it),
-                    onMenuClick = { _ -> })
-            })
+                {
+                    MenuListUI(
+                        modifier = Modifier.padding(it),
+                        onMenuClick = { _ -> },
+                    )
+                },
+        )
     }
 }
 
@@ -162,9 +175,8 @@ private fun PreviewMenuListScreen() {
 fun MenuListUI(
     onMenuClick: (MenuType) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: MenuListViewModel = viewModel()
+    viewModel: MenuListViewModel = viewModel(),
 ) {
-
     val uiState by viewModel.uiState.collectAsState()
     when (uiState) {
         is UiState.Loading -> {}
@@ -176,9 +188,10 @@ fun MenuListUI(
                     item {
                         MenuItem(header = header, list = list, onMenuClick = onMenuClick)
                         Divider(
-                            modifier = Modifier
-                                .background(Color.LightGray)
-                                .height(8.dp)
+                            modifier =
+                                Modifier
+                                    .background(Color.LightGray)
+                                    .height(8.dp),
                         )
                     }
                 }
@@ -187,16 +200,14 @@ fun MenuListUI(
 
         is UiState.Error -> {}
     }
-
 }
-
 
 @Composable
 fun MenuItem(
     header: String,
     list: List<MenuType>,
     onMenuClick: (MenuType) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier) {
         MenuItemHeader(header = header)
@@ -204,39 +215,45 @@ fun MenuItem(
             MenuItemDetail(menuType, onMenuClick)
             if (index != list.size - 1) {
                 Divider(
-                    modifier = Modifier
-                        .background(Color.LightGray)
-                        .height(1.dp)
+                    modifier =
+                        Modifier
+                            .background(Color.LightGray)
+                            .height(1.dp),
                 )
             }
         }
     }
-
 }
 
-
 @Composable
-fun MenuItemHeader(header: String, modifier: Modifier = Modifier) {
+fun MenuItemHeader(
+    header: String,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier
             .fillMaxWidth()
             .height(40.dp)
             .padding(start = 16.dp),
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         Text(header, fontWeight = FontWeight.Bold)
     }
 }
 
 @Composable
-fun MenuItemDetail(item: MenuType, onMenuClick: (MenuType) -> Unit, modifier: Modifier = Modifier) {
+fun MenuItemDetail(
+    item: MenuType,
+    onMenuClick: (MenuType) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier
             .fillMaxWidth()
             .height(80.dp)
             .clickable { onMenuClick(item) }
             .padding(start = 16.dp),
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         Text(item.menuName)
         Text("${item.price.addCommasToNumber()}원")
