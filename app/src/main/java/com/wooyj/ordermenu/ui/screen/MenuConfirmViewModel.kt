@@ -11,27 +11,28 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
-
 @HiltViewModel
-class MenuConfirmViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle
-) : ViewModel() {
+class MenuConfirmViewModel
+    @Inject
+    constructor(
+        private val savedStateHandle: SavedStateHandle,
+    ) : ViewModel() {
+        private var _uiState = MutableStateFlow<UiState<OrderOption>>(UiState.Loading)
+        val uiState: StateFlow<UiState<OrderOption>> = _uiState.asStateFlow()
 
-    private var _uiState = MutableStateFlow<UiState<OrderOption>>(UiState.Loading)
-    val uiState: StateFlow<UiState<OrderOption>> = _uiState.asStateFlow()
-    init {
-        viewModelScope.launch {
-            val orderOption = savedStateHandle.get<OrderOption>("orderOption")
-            Log.d("OrderOption", "$orderOption")
-            if (orderOption != null) {
-                _uiState.value = UiState.Success(data = orderOption)
-            } else {
-                _uiState.value =
-                    UiState.Error(exception = Throwable("전달받은 값이 없습니다. orderOption is $orderOption"))
+        init {
+            viewModelScope.launch {
+                val orderOption = Json.decodeFromString<OrderOption>(savedStateHandle.get<String>("option")!!)
+                Log.d("OrderOption", "$orderOption")
+                if (orderOption != null) {
+                    _uiState.value = UiState.Success(data = orderOption)
+                } else {
+                    _uiState.value =
+                        UiState.Error(exception = Throwable("전달받은 값이 없습니다. orderOption is $orderOption"))
+                }
             }
         }
     }
-
-}

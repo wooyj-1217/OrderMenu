@@ -10,17 +10,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
-
 @HiltViewModel
-class MenuListViewModel @Inject constructor() : ViewModel() {
+class MenuListViewModel
+    @Inject
+    constructor() : ViewModel() {
+        private var _uiState = MutableStateFlow<UiState<List<MenuType>>>(UiState.Loading)
+        val uiState: StateFlow<UiState<List<MenuType>>> = _uiState.asStateFlow()
 
-
-    private var _uiState = MutableStateFlow<UiState<List<MenuType>>>(UiState.Loading)
-    val uiState: StateFlow<UiState<List<MenuType>>> = _uiState.asStateFlow()
-
-    init {
-        _uiState.value = UiState.Success(data = menuList)
+        init {
+            _uiState.value = UiState.Success(data = menuList)
+        }
     }
-
-
-}
