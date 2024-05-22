@@ -43,33 +43,31 @@ fun MenuConfirmScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    OrderMenuTheme {
-        Scaffold(
-            modifier = modifier.fillMaxSize(),
-            topBar = {
-                TopAppBar(title = {}, navigationIcon = {
-                    IconButton(
-                        onClick = goIntro,
-                    ) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                    }
-                })
-            },
-            content = {
-                when (uiState) {
-                    is UiState.Success -> {
-                        MenuConfirmUI(
-                            modifier = Modifier.padding(it),
-                            goIntro = goIntro,
-                            option = (uiState as UiState.Success<MenuConfirmUiState>).data.orderOption,
-                        )
-                    }
-
-                    else -> {}
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        topBar = {
+            TopAppBar(title = {}, navigationIcon = {
+                IconButton(
+                    onClick = goIntro,
+                ) {
+                    Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                 }
-            },
-        )
-    }
+            })
+        },
+        content = {
+            when (uiState) {
+                is UiState.Success -> {
+                    MenuConfirmUI(
+                        modifier = Modifier.padding(it),
+                        goIntro = goIntro,
+                        option = (uiState as UiState.Success<MenuConfirmUiState>).data.orderOption,
+                    )
+                }
+
+                else -> {}
+            }
+        },
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -91,16 +89,16 @@ private fun PreviewMenuConfirmScreen() {
                     modifier = Modifier.padding(it),
                     goIntro = {},
                     option =
-                        OrderOption(
-                            menuType =
-                                MenuType.Coffee(
-                                    menuName = "아메리카노",
-                                    price = Price(1500),
-                                ),
-                            tempOption = TempOption.Hot,
-                            caffeineOption = CaffeineOption.DeCaffeine,
-                            iceOption = IceOption.Small,
+                    OrderOption(
+                        menuType =
+                        MenuType.Coffee(
+                            menuName = "아메리카노",
+                            price = Price(1500),
                         ),
+                        tempOption = TempOption.Hot,
+                        caffeineOption = CaffeineOption.DeCaffeine,
+                        iceOption = IceOption.Small,
+                    ),
                 )
             },
         )
@@ -119,24 +117,24 @@ fun MenuConfirmUI(
     ) {
         Row(
             modifier =
-                modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp),
+            modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Column {
                 Text(option.menuType.menuName)
-                Text(option.getOptionString())
+                Text(option.toString())
             }
             Text("${option.menuType.price.addCommasToNumber()}원")
         }
         Button(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .height(90.dp)
-                    .padding(16.dp),
+            Modifier
+                .fillMaxWidth()
+                .height(90.dp)
+                .padding(16.dp),
             onClick = goIntro,
         ) {
             Text("닫기", fontSize = 20.sp)

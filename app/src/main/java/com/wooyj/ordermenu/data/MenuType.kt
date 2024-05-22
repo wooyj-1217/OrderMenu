@@ -66,7 +66,7 @@ data class OrderOption(
     var caffeineOption: CaffeineOption?,
     var iceOption: IceOption?,
 ) {
-    fun getOptionString(): String {
+    override fun toString(): String {
         val desc = mutableListOf<String>()
         tempOption?.let { desc.add(it.toString()) }
         caffeineOption?.let { desc.add(it.toString()) }

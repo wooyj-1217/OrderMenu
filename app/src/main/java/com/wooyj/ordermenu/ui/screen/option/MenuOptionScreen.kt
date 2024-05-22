@@ -35,38 +35,36 @@ fun MenuOptionScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    OrderMenuTheme {
-        Scaffold(
-            modifier = modifier.fillMaxSize(),
-            topBar = {
-                TopAppBar(title = {}, navigationIcon = {
-                    IconButton(onClick = backIconClick) {
-                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
-                    }
-                })
-            },
-            content = {
-                when (uiState) {
-                    is UiState.Success -> {
-                        val order = (uiState as UiState.Success<MenuOptionUiState>).data.orderOption
-                        val menu = order.menuType
-                        MenuOptionUI(
-                            modifier = Modifier.padding(it),
-                            onNextClick = onNextClick,
-                            order = order,
-                            menu = menu,
-                            clickTempOption = viewModel::clickTempOption,
-                            clickCaffeineOption = viewModel::clickCaffeineOption,
-                            clickIceOption = viewModel::clickIceOption,
-                        )
-                    }
-
-                    else -> {
-                    }
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        topBar = {
+            TopAppBar(title = {}, navigationIcon = {
+                IconButton(onClick = backIconClick) {
+                    Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
                 }
-            },
-        )
-    }
+            })
+        },
+        content = {
+            when (uiState) {
+                is UiState.Success -> {
+                    val order = (uiState as UiState.Success<MenuOptionUiState>).data.orderOption
+                    val menu = order.menuType
+                    MenuOptionUI(
+                        modifier = Modifier.padding(it),
+                        onNextClick = onNextClick,
+                        order = order,
+                        menu = menu,
+                        clickTempOption = viewModel::clickTempOption,
+                        clickCaffeineOption = viewModel::clickCaffeineOption,
+                        clickIceOption = viewModel::clickIceOption,
+                    )
+                }
+
+                else -> {
+                }
+            }
+        },
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -87,21 +85,21 @@ private fun PreviewMenuOptionScreen() {
                 MenuOptionUI(
                     onNextClick = { _ -> },
                     order =
-                        OrderOption(
-                            menuType =
-                                MenuType.Coffee(
-                                    menuName = "아메리카노",
-                                    price = Price(1500),
-                                ),
-                            tempOption = TempOption.Hot,
-                            caffeineOption = CaffeineOption.Caffeine,
-                            iceOption = IceOption.Small,
-                        ),
-                    menu =
+                    OrderOption(
+                        menuType =
                         MenuType.Coffee(
                             menuName = "아메리카노",
                             price = Price(1500),
                         ),
+                        tempOption = TempOption.Hot,
+                        caffeineOption = CaffeineOption.Caffeine,
+                        iceOption = IceOption.Small,
+                    ),
+                    menu =
+                    MenuType.Coffee(
+                        menuName = "아메리카노",
+                        price = Price(1500),
+                    ),
                     modifier = Modifier.padding(it),
                     clickTempOption = {},
                     clickCaffeineOption = {},
