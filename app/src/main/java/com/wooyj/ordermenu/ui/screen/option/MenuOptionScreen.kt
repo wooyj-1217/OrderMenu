@@ -33,6 +33,7 @@ fun MenuOptionScreen(
     modifier: Modifier = Modifier,
     viewModel: MenuOptionViewModel = hiltViewModel(),
 ) {
+    // TODO("compose의 lifecycle과 기존 activity나 fragment의 lifecycle은 다른가요?")
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
