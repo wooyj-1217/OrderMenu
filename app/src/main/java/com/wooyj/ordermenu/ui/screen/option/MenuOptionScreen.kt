@@ -60,8 +60,7 @@ fun MenuOptionScreen(
                     )
                 }
 
-                else -> {
-                }
+                else -> Unit
             }
         },
     )

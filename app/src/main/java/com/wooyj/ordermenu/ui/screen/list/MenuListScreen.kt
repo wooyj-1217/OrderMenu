@@ -48,8 +48,7 @@ fun MenuListScreen(
                         menuList = (uiState as UiState.Success).data.menuList,
                     )
                 }
-
-                else -> {}
+                else -> Unit
             }
         },
     )

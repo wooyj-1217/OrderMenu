@@ -64,7 +64,7 @@ fun MenuConfirmScreen(
                     )
                 }
 
-                else -> {}
+                else -> Unit
             }
         },
     )
