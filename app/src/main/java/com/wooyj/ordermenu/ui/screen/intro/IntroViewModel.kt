@@ -15,6 +15,6 @@ class IntroViewModel
         val uiState = _uiState.asStateFlow()
 
         init {
-            _uiState.value = UiState.Success(data = IntroUiState("반가워요\n주문을 시작할게요", buttonText = "다음"))
+            _uiState.value = UiState.Success(data = IntroUiState("반가워요\n주문을 시작할게요"))
         }
     }

@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.wooyj.ordermenu.ui.screen.common.appbar.AppNavigationBar
+import com.wooyj.ordermenu.ui.screen.common.appbar.AppNavigationBarUiState
 import com.wooyj.ordermenu.ui.screen.common.uistate.UiState
 import com.wooyj.ordermenu.ui.screen.intro.state.IntroUI
 import com.wooyj.ordermenu.ui.theme.OrderMenuTheme
@@ -23,16 +25,18 @@ fun IntroScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     Scaffold(
         topBar = {
+            AppNavigationBar(
+                uiState = AppNavigationBarUiState.Intro,
+            )
         },
-        modifier = modifier.fillMaxSize(),
     ) { innerPadding ->
         when (uiState) {
             is UiState.Success -> {
+                val data = (uiState as UiState.Success<IntroUiState>).data
                 IntroUI(
-                    modifier = Modifier.padding(innerPadding),
+                    modifier = modifier.padding(innerPadding),
+                    titleText = data.titleText,
                     onNextNavigation = onNextNavigation,
-                    titleText = (uiState as UiState.Success<IntroUiState>).data.text,
-                    buttonText = (uiState as UiState.Success<IntroUiState>).data.buttonText,
                 )
             }
 
@@ -49,7 +53,7 @@ private fun PreviewIntroScreen() {
         Surface(
             modifier = Modifier.fillMaxSize(),
         ) {
-            IntroUI(onNextNavigation = {}, titleText = "반가워요\n주문을 시작할게요", buttonText = "다음")
+            IntroUI(onNextNavigation = {}, titleText = "반가워요\n주문을 시작할게요")
         }
     }
 }

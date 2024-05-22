@@ -16,19 +16,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.wooyj.ordermenu.data.MenuType
+import com.wooyj.ordermenu.ui.screen.list.model.MenuTypeUi
 
 @Composable
 fun MenuListUI(
-    menuList: List<MenuType>,
-    onMenuClick: (MenuType) -> Unit,
+    menuList: Map<String, List<MenuTypeUi>>,
+    onMenuClick: (MenuTypeUi) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val groupedMap = menuList.groupBy { it.javaClass.simpleName }
     LazyColumn(modifier.fillMaxSize()) {
-        groupedMap.forEach { (header, list) ->
+        menuList.forEach { (header, list) ->
             item {
-                MenuItem(header = header, list = list, onMenuClick = onMenuClick)
+                MenuHeader(header)
+                list.forEach { menuType ->
+                    MenuItem(menuType, onMenuClick)
+                }
                 Divider(
                     modifier =
                         Modifier
@@ -41,30 +43,7 @@ fun MenuListUI(
 }
 
 @Composable
-fun MenuItem(
-    header: String,
-    list: List<MenuType>,
-    onMenuClick: (MenuType) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Column(modifier) {
-        MenuItemHeader(header = header)
-        list.forEachIndexed { index, menuType ->
-            MenuItemDetail(menuType, onMenuClick)
-            if (index != list.size - 1) {
-                Divider(
-                    modifier =
-                        Modifier
-                            .background(Color.LightGray)
-                            .height(1.dp),
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun MenuItemHeader(
+fun MenuHeader(
     header: String,
     modifier: Modifier = Modifier,
 ) {
@@ -81,9 +60,9 @@ fun MenuItemHeader(
 }
 
 @Composable
-fun MenuItemDetail(
-    item: MenuType,
-    onMenuClick: (MenuType) -> Unit,
+fun MenuItem(
+    item: MenuTypeUi,
+    onMenuClick: (MenuTypeUi) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(

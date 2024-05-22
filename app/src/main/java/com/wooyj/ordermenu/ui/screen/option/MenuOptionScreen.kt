@@ -85,21 +85,21 @@ private fun PreviewMenuOptionScreen() {
                 MenuOptionUI(
                     onNextClick = { _ -> },
                     order =
-                    OrderOption(
-                        menuType =
+                        OrderOption(
+                            menuType =
+                                MenuType.Coffee(
+                                    menuName = "아메리카노",
+                                    price = Price(1500),
+                                ),
+                            tempOption = TempOption.Hot,
+                            caffeineOption = CaffeineOption.Caffeine,
+                            iceOption = IceOption.Small,
+                        ),
+                    menu =
                         MenuType.Coffee(
                             menuName = "아메리카노",
                             price = Price(1500),
                         ),
-                        tempOption = TempOption.Hot,
-                        caffeineOption = CaffeineOption.Caffeine,
-                        iceOption = IceOption.Small,
-                    ),
-                    menu =
-                    MenuType.Coffee(
-                        menuName = "아메리카노",
-                        price = Price(1500),
-                    ),
                     modifier = Modifier.padding(it),
                     clickTempOption = {},
                     clickCaffeineOption = {},
