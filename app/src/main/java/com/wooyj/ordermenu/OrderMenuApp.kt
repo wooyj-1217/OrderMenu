@@ -4,6 +4,7 @@ import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 // TODO("회사 관련 질문")
+
 /**
  *  1. 배경
  *  - firebase cloud messaging으로 푸시알람을 생성하는데 백그라운드 상황에서 Big Image가 안나오는 현상 보고됨. hotfix로 작업해주길 바랐음.

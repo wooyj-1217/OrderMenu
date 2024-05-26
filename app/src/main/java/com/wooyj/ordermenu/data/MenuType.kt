@@ -84,14 +84,10 @@ sealed class MenuType(
     val listCaffeineOption: List<CaffeineOption> = emptyList(),
     val listIceOption: List<IceOption> = emptyList(),
 ) {
-    // error : Serializable class has duplicate serial name of property 'menuName', either in the class itself or its supertypes
-    // - @Transient(=temporary) : 상위속성이 중복되지 않도록 하기 위한 annotation. 무조건 기본값을 셋팅해주긴 해야 함.
-    // - 안되는 이유 : override 할 때 부모, 자식  두개의 백업 필드가 표시되기 때문. (저번주에 Price 값이 두번 바뀐 이유도 동일한 이슈였음. Transient로 기본값 Price(0)을 해놨으니까 2번 생성.)
-    // https://github.com/Kotlin/kotlinx.serialization/issues/2000
     @Serializable
     class Coffee(
         @SerialName("coffeeMenuName") override val menuName: String,
-        @SerialName("coffeeMenuPrice")override val price: Price,
+        @SerialName("coffeeMenuPrice") override val price: Price,
     ) : MenuType(
             menuName = menuName,
             price = price,
@@ -113,8 +109,8 @@ sealed class MenuType(
 
     @Serializable
     class Tea(
-        @SerialName("teaMenuName")override val menuName: String,
-        @SerialName("teaMenuPrice")override val price: Price,
+        @SerialName("teaMenuName") override val menuName: String,
+        @SerialName("teaMenuPrice") override val price: Price,
     ) : MenuType(
             menuName = menuName,
             price = price,
@@ -124,13 +120,36 @@ sealed class MenuType(
 
     @Serializable
     class Dessert(
-        @SerialName("dessertMenuName")override val menuName: String,
-        @SerialName("dessertMenuPrice")override val price: Price,
+        @SerialName("dessertMenuName") override val menuName: String,
+        @SerialName("dessertMenuPrice") override val price: Price,
     ) : MenuType(
             menuName = menuName,
             price = price,
         )
 }
+
+fun MenuType.toOrderOption(): OrderOption =
+    OrderOption(
+        menuType = this,
+        tempOption =
+            if (listTempOption.isNotEmpty()) {
+                listTempOption[0]
+            } else {
+                null
+            },
+        caffeineOption =
+            if (listCaffeineOption.isNotEmpty()) {
+                listCaffeineOption[0]
+            } else {
+                null
+            },
+        iceOption =
+            if (listIceOption.isNotEmpty()) {
+                listIceOption[0]
+            } else {
+                null
+            },
+    )
 
 val menuList =
     listOf(

@@ -33,7 +33,6 @@ fun MenuOptionScreen(
     modifier: Modifier = Modifier,
     viewModel: MenuOptionViewModel = hiltViewModel(),
 ) {
-    // TODO("compose의 lifecycle과 기존 activity나 fragment의 lifecycle은 다른가요?")
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
@@ -85,21 +84,21 @@ private fun PreviewMenuOptionScreen() {
                 MenuOptionUI(
                     onNextClick = { _ -> },
                     order =
-                    OrderOption(
-                        menuType =
+                        OrderOption(
+                            menuType =
+                                MenuType.Coffee(
+                                    menuName = "아메리카노",
+                                    price = Price(1500),
+                                ),
+                            tempOption = TempOption.Hot,
+                            caffeineOption = CaffeineOption.Caffeine,
+                            iceOption = IceOption.Small,
+                        ),
+                    menu =
                         MenuType.Coffee(
                             menuName = "아메리카노",
                             price = Price(1500),
                         ),
-                        tempOption = TempOption.Hot,
-                        caffeineOption = CaffeineOption.Caffeine,
-                        iceOption = IceOption.Small,
-                    ),
-                    menu =
-                    MenuType.Coffee(
-                        menuName = "아메리카노",
-                        price = Price(1500),
-                    ),
                     modifier = Modifier.padding(it),
                     clickTempOption = {},
                     clickCaffeineOption = {},

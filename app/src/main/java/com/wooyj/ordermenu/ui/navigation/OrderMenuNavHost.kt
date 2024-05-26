@@ -5,15 +5,16 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.wooyj.ordermenu.data.OrderOption
+import androidx.navigation.navArgument
+import com.wooyj.ordermenu.data.toOrderOption
 import com.wooyj.ordermenu.ui.screen.confirm.MenuConfirmScreen
 import com.wooyj.ordermenu.ui.screen.intro.IntroScreen
 import com.wooyj.ordermenu.ui.screen.list.MenuListScreen
 import com.wooyj.ordermenu.ui.screen.option.MenuOptionScreen
-import kotlin.reflect.typeOf
 
 @Composable
 fun OrderMenuNavHost(
@@ -22,50 +23,30 @@ fun OrderMenuNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Intro,
+        startDestination = Screen.Intro.route,
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None },
         modifier = modifier,
     ) {
-        composable<Screen.Intro> {
-            IntroScreen(onNextNavigation = { navController.navigate(Screen.MenuList) })
+        composable(route = Screen.Intro.route) {
+            IntroScreen(onNextNavigation = { navController.navigate(Screen.MenuList.route) })
         }
-        composable<Screen.MenuList> {
+        composable(route = Screen.MenuList.route) {
             MenuListScreen(
                 backIconClick = {
                     navController.popBackStack()
                 },
                 onMenuClick = { menu ->
-                    val orderOption =
-                        OrderOption(
-                            menuType = menu,
-                            tempOption =
-                                if (menu.listTempOption.isNotEmpty()) {
-                                    menu.listTempOption[0]
-                                } else {
-                                    null
-                                },
-                            caffeineOption =
-                                if (menu.listCaffeineOption.isNotEmpty()) {
-                                    menu.listCaffeineOption[0]
-                                } else {
-                                    null
-                                },
-                            iceOption =
-                                if (menu.listIceOption.isNotEmpty()) {
-                                    menu.listIceOption[0]
-                                } else {
-                                    null
-                                },
-                        )
-                    navController.navigate(Screen.SelectOption(option = orderOption))
+                    val option = menu.toOrderOption()
+                    navController.navigate(route = Screen.SelectOption.setOption(option))
                 },
             )
         }
-        composable<Screen.SelectOption>(
-            typeMap =
-                mapOf(
-                    typeOf<OrderOption>() to NavTypeOrderOption,
+        composable(
+            route = Screen.SelectOption.route,
+            arguments =
+                listOf(
+                    navArgument("option") { type = NavType.StringType },
                 ),
         ) {
             MenuOptionScreen(
@@ -73,19 +54,22 @@ fun OrderMenuNavHost(
                     navController.popBackStack()
                 },
                 onNextClick = { option ->
-                    navController.navigate(Screen.ConfirmOrder(option = option))
+                    // TODO("post 방식....대체 어떻게..?")
+//                    navController.currentBackStackEntry?.savedStateHandle?.set("option", Json.encodeToString(option))
+                    navController.navigate(route = Screen.ConfirmOrder.setOption(option))
                 },
             )
         }
-        composable<Screen.ConfirmOrder>(
-            typeMap =
-                mapOf(
-                    typeOf<OrderOption>() to NavTypeOrderOption,
+        composable(
+            route = Screen.ConfirmOrder.route,
+            arguments =
+                listOf(
+                    navArgument("option") { type = NavType.StringType },
                 ),
         ) {
             MenuConfirmScreen(
                 goIntro = {
-                    navController.navigate(Screen.Intro) {
+                    navController.navigate(Screen.Intro.route) {
                         popUpTo(navController.graph.startDestinationId) {
                             inclusive = true
                         }
@@ -95,18 +79,3 @@ fun OrderMenuNavHost(
         }
     }
 }
-// TODO("Nav host 안에 Nav graph는 어떤 때 쓰나요?")
-// fun NavGraphBuilder.orderMenuGraph(navController: NavController) {
-//    composable<Screen.Intro> {
-//        IntroScreen(navController = navController)
-//    }
-//    composable<Screen.MenuList> {
-//        MenuListScreen(navController = navController)
-//    }
-//    composable<Screen.SelectOption> {
-//        MenuOptionScreen(navController = navController)
-//    }
-//    composable<Screen.ConfirmOrder> {
-//        MenuConfirmScreen(navController = navController)
-//    }
-// }

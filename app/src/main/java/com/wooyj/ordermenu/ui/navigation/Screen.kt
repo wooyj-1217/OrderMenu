@@ -1,18 +1,28 @@
 package com.wooyj.ordermenu.ui.navigation
 
+import androidx.core.net.toUri
 import com.wooyj.ordermenu.data.OrderOption
-import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
-sealed interface Screen {
-    @Serializable
-    data object Intro : Screen
+sealed class Screen(
+    val route: String,
+) {
+    data object Intro : Screen(route = "intro")
 
-    @Serializable
-    data object MenuList : Screen
+    data object MenuList : Screen(route = "menu/list")
 
-    @Serializable
-    data class SelectOption(val option: OrderOption) : Screen
+    data object SelectOption : Screen(route = "menu/option/{option}") {
+        fun setOption(option: OrderOption): String {
+            val optionString = Json.encodeToString(option).toUri()
+            return "menu/option/$optionString"
+        }
+    }
 
-    @Serializable
-    data class ConfirmOrder(val option: OrderOption) : Screen
+    data object ConfirmOrder : Screen(route = "menu/confirm/{option}") {
+        fun setOption(option: OrderOption): String {
+            val optionString = Json.encodeToString(option).toUri()
+            return "menu/confirm/$optionString"
+        }
+    }
 }
