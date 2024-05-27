@@ -27,15 +27,14 @@ fun IntroScreen(
         topBar = {
             AppNavBar(uiState = AppNavBarUiState.Intro, navAction = {})
         },
-        modifier = modifier.fillMaxSize(),
     ) { innerPadding ->
         when (uiState) {
             is UiState.Success -> {
+                val data = (uiState as UiState.Success<IntroUiState>).data
                 IntroUI(
-                    modifier = Modifier.padding(innerPadding),
+                    modifier = modifier.padding(innerPadding),
                     onNextNavigation = onNextNavigation,
-                    titleText = (uiState as UiState.Success<IntroUiState>).data.text,
-                    buttonText = (uiState as UiState.Success<IntroUiState>).data.buttonText,
+                    titleText = data.text,
                 )
             }
 
@@ -52,7 +51,7 @@ private fun PreviewIntroScreen() {
         Surface(
             modifier = Modifier.fillMaxSize(),
         ) {
-            IntroUI(onNextNavigation = {}, titleText = "반가워요\n주문을 시작할게요", buttonText = "다음")
+            IntroUI(onNextNavigation = {}, titleText = "반가워요\n주문을 시작할게요")
         }
     }
 }

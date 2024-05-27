@@ -15,12 +15,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.wooyj.ordermenu.data.CaffeineOption
 import com.wooyj.ordermenu.data.IceOption
 import com.wooyj.ordermenu.data.MenuType
 import com.wooyj.ordermenu.data.OrderOption
 import com.wooyj.ordermenu.data.TempOption
+import com.wooyj.ordermenu.ui.screen.common.button.NextButton
 
 @Composable
 fun MenuOptionUI(
@@ -67,16 +67,7 @@ fun MenuOptionUI(
                 )
             }
         }
-        Button(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .height(90.dp)
-                    .padding(16.dp),
-            onClick = { onNextClick(order) },
-        ) {
-            Text("다음", fontSize = 20.sp)
-        }
+        NextButton(onNextNavigation = { onNextClick(order) })
     }
 }
 

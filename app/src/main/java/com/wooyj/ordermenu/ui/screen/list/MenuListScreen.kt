@@ -35,11 +35,6 @@ fun MenuListScreen(
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-//            TopAppBar(title = {}, navigationIcon = {
-//                IconButton(onClick = backIconClick) {
-//                    Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-//                }
-//            })
             AppNavBar(uiState = AppNavBarUiState.List, navAction = backIconClick)
         },
         content = {

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">OrderMenu</string>
+    <string name="close">닫기</string>
+    <string name="next">다음</string>
 </resources>
