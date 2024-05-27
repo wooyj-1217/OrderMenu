@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.wooyj.ordermenu.ui.screen.common.appbar.AppNavBar
+import com.wooyj.ordermenu.ui.screen.common.appbar.AppNavBarUiState
 import com.wooyj.ordermenu.ui.screen.common.uistate.UiState
 import com.wooyj.ordermenu.ui.screen.intro.state.IntroUI
 import com.wooyj.ordermenu.ui.theme.OrderMenuTheme
@@ -23,6 +25,7 @@ fun IntroScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     Scaffold(
         topBar = {
+            AppNavBar(uiState = AppNavBarUiState.Intro, navAction = {})
         },
         modifier = modifier.fillMaxSize(),
     ) { innerPadding ->

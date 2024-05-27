@@ -21,11 +21,12 @@ import com.wooyj.ordermenu.data.MenuType
 import com.wooyj.ordermenu.data.OrderOption
 import com.wooyj.ordermenu.data.Price
 import com.wooyj.ordermenu.data.TempOption
+import com.wooyj.ordermenu.ui.screen.common.appbar.AppNavBar
+import com.wooyj.ordermenu.ui.screen.common.appbar.AppNavBarUiState
 import com.wooyj.ordermenu.ui.screen.common.uistate.UiState
 import com.wooyj.ordermenu.ui.screen.option.state.MenuOptionUI
 import com.wooyj.ordermenu.ui.theme.OrderMenuTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuOptionScreen(
     onNextClick: (OrderOption) -> Unit,
@@ -38,11 +39,7 @@ fun MenuOptionScreen(
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(title = {}, navigationIcon = {
-                IconButton(onClick = backIconClick) {
-                    Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
-                }
-            })
+            AppNavBar(uiState = AppNavBarUiState.List, navAction = backIconClick)
         },
         content = {
             when (uiState) {

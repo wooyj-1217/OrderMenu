@@ -17,6 +17,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wooyj.ordermenu.data.MenuType
 import com.wooyj.ordermenu.data.menuList
+import com.wooyj.ordermenu.ui.screen.common.appbar.AppNavBar
+import com.wooyj.ordermenu.ui.screen.common.appbar.AppNavBarUiState
 import com.wooyj.ordermenu.ui.screen.common.uistate.UiState
 import com.wooyj.ordermenu.ui.screen.list.state.MenuListUI
 import com.wooyj.ordermenu.ui.theme.OrderMenuTheme
@@ -33,11 +35,12 @@ fun MenuListScreen(
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(title = {}, navigationIcon = {
-                IconButton(onClick = backIconClick) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                }
-            })
+//            TopAppBar(title = {}, navigationIcon = {
+//                IconButton(onClick = backIconClick) {
+//                    Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+//                }
+//            })
+            AppNavBar(uiState = AppNavBarUiState.List, navAction = backIconClick)
         },
         content = {
             when (uiState) {

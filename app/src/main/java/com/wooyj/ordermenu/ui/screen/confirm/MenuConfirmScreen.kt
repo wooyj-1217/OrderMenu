@@ -31,6 +31,8 @@ import com.wooyj.ordermenu.data.MenuType
 import com.wooyj.ordermenu.data.OrderOption
 import com.wooyj.ordermenu.data.Price
 import com.wooyj.ordermenu.data.TempOption
+import com.wooyj.ordermenu.ui.screen.common.appbar.AppNavBar
+import com.wooyj.ordermenu.ui.screen.common.appbar.AppNavBarUiState
 import com.wooyj.ordermenu.ui.screen.common.uistate.UiState
 import com.wooyj.ordermenu.ui.theme.OrderMenuTheme
 
@@ -46,13 +48,7 @@ fun MenuConfirmScreen(
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(title = {}, navigationIcon = {
-                IconButton(
-                    onClick = goIntro,
-                ) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                }
-            })
+            AppNavBar(uiState = AppNavBarUiState.Confirm, navAction = goIntro)
         },
         content = {
             when (uiState) {
