@@ -1,9 +1,7 @@
 package com.wooyj.ordermenu.ui.screen.intro
 
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -47,11 +45,8 @@ fun IntroScreen(
 @Composable
 private fun PreviewIntroScreen() {
     OrderMenuTheme {
-        // A surface container using the 'background' color from the theme
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-        ) {
-            IntroUI(onNextNavigation = {}, titleText = "반가워요\n주문을 시작할게요")
-        }
+        IntroScreen(
+            onNextNavigation = {},
+        )
     }
 }

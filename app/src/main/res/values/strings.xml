@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">OrderMenu</string>
+    <string name="intro_message">반가워요\n주문을 시작할게요</string>
     <string name="close">닫기</string>
     <string name="next">다음</string>
+    <string name="coffee">커피</string>
+    <string name="beverage">음료</string>
+    <string name="tea">차</string>
+    <string name="dessert">디저트</string>
+    <string name="basic">기본</string>
+    <string name="decaffeine">디카페인</string>
+    <string name="ice">얼음</string>
 </resources>

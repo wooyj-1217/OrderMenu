@@ -1,6 +1,8 @@
 package com.wooyj.ordermenu.data
 
+import android.content.res.Resources
 import android.util.Log
+import com.wooyj.ordermenu.R
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.text.NumberFormat
@@ -16,6 +18,15 @@ enum class TempOption {
             Hot -> "HOT"
             Ice -> "ICE"
         }
+
+    companion object {
+        fun fromString(string: String): TempOption =
+            when (string) {
+                Hot.toString() -> Hot
+                Ice.toString() -> Ice
+                else -> throw IllegalArgumentException("Unknown TempOption")
+            }
+    }
 }
 
 enum class CaffeineOption {
@@ -28,6 +39,15 @@ enum class CaffeineOption {
             Caffeine -> "카페인"
             DeCaffeine -> "디카페인"
         }
+
+    companion object {
+        fun fromString(string: String): CaffeineOption =
+            when (string) {
+                Caffeine.toString() -> Caffeine
+                DeCaffeine.toString() -> DeCaffeine
+                else -> throw IllegalArgumentException("Unknown CaffeineOption")
+            }
+    }
 }
 
 enum class IceOption {
@@ -42,6 +62,16 @@ enum class IceOption {
             Medium -> "보통"
             Large -> "많이"
         }
+
+    companion object {
+        fun fromString(string: String): IceOption =
+            when (string) {
+                Small.toString() -> Small
+                Medium.toString() -> Medium
+                Large.toString() -> Large
+                else -> throw IllegalArgumentException("Unknown IceOption")
+            }
+    }
 }
 
 @Serializable
@@ -52,7 +82,7 @@ value class Price(val value: Int) {
         require(value > 0) { "값은 항상 0보다 커야 합니다." }
     }
 
-    fun addCommasToNumber(): String {
+    override fun toString(): String {
         val format = NumberFormat.getNumberInstance(Locale.getDefault())
         return format.format(value)
     }
@@ -94,7 +124,11 @@ sealed class MenuType(
             listTempOption = listOf(TempOption.Hot, TempOption.Ice),
             listCaffeineOption = listOf(CaffeineOption.Caffeine, CaffeineOption.DeCaffeine),
             listIceOption = listOf(IceOption.Small, IceOption.Medium, IceOption.Large),
-        )
+        ) {
+        override fun toString(): String {
+            return Resources.getSystem().getString(R.string.coffee)
+        }
+    }
 
     @Serializable
     class Beverage(
@@ -105,7 +139,11 @@ sealed class MenuType(
             price = price,
             listTempOption = listOf(TempOption.Ice),
             listIceOption = listOf(IceOption.Small, IceOption.Medium, IceOption.Large),
-        )
+        ) {
+        override fun toString(): String {
+            return Resources.getSystem().getString(R.string.beverage)
+        }
+    }
 
     @Serializable
     class Tea(
@@ -116,7 +154,11 @@ sealed class MenuType(
             price = price,
             listTempOption = listOf(TempOption.Hot),
             listCaffeineOption = listOf(CaffeineOption.Caffeine, CaffeineOption.DeCaffeine),
-        )
+        ) {
+        override fun toString(): String {
+            return Resources.getSystem().getString(R.string.tea)
+        }
+    }
 
     @Serializable
     class Dessert(
@@ -125,7 +167,11 @@ sealed class MenuType(
     ) : MenuType(
             menuName = menuName,
             price = price,
-        )
+        ) {
+        override fun toString(): String {
+            return Resources.getSystem().getString(R.string.dessert)
+        }
+    }
 }
 
 fun MenuType.toOrderOption(): OrderOption =
