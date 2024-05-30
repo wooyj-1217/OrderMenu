@@ -43,6 +43,7 @@ data class TempOptionToggleButtonGroupUiState(
 data class CaffeineOptionToggleButtonGroupUiState(
     override val isVisible: Boolean,
     override val title: String = "디카페인",
+    // TODO("Resources.getSystem().getString() 썼더니 에러나서 일단 string으로 대체했습니다. 근데 이거 어떻게 해야 에러가 안날까요..? 그냥 resId로 받아와야 할까요?")
 //    override val title: String = Resources.getSystem().getString(R.string.decaffeine),
     override val toggleButtonGroup: ToggleButtonGroupUiState,
 ) : ToggleButtonGroupWithTitleUiState(

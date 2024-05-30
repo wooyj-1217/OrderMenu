@@ -44,7 +44,7 @@ fun ToggleButtonWithTitle(
     modifier: Modifier = Modifier,
 ) {
     if (uiState.isVisible) {
-        Column {
+        Column(modifier = modifier) {
             Text(text = uiState.title)
             ToggleButtonGroup(uiState = uiState.toggleButtonGroup, onClick = onClick)
         }

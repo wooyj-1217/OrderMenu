@@ -20,7 +20,7 @@ import com.wooyj.ordermenu.ui.theme.OrderMenuTheme
 @Composable
 fun MenuOptionScreen(
     onNextClick: (OrderOption) -> Unit,
-    backIconClick: () -> Unit,
+    appBarAction: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MenuOptionViewModel = hiltViewModel(),
 ) {
@@ -29,7 +29,7 @@ fun MenuOptionScreen(
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-            AppNavBar(uiState = AppNavBarUiState.List, navAction = backIconClick)
+            AppNavBar(uiState = AppNavBarUiState.List, navAction = appBarAction)
         },
         content = {
             when (uiState) {
@@ -57,7 +57,7 @@ private fun PreviewMenuOptionScreen() {
     OrderMenuTheme {
         MenuOptionScreen(
             onNextClick = {},
-            backIconClick = {},
+            appBarAction = {},
         )
     }
 }

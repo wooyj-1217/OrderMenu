@@ -21,13 +21,13 @@ fun MenuListScreen(
     onMenuClick: (MenuType) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MenuListViewModel = hiltViewModel(),
-    backIconClick: () -> Unit,
+    appBarAction: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-            AppNavBar(uiState = AppNavBarUiState.List, navAction = backIconClick)
+            AppNavBar(uiState = AppNavBarUiState.List, navAction = appBarAction)
         },
         content = {
             when (uiState) {
@@ -52,7 +52,7 @@ private fun PreviewMenuListScreen() {
     OrderMenuTheme {
         MenuListScreen(
             onMenuClick = {},
-            backIconClick = {},
+            appBarAction = {},
         )
     }
 }

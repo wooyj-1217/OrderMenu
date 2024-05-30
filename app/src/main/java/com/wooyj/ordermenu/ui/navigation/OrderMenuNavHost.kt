@@ -33,7 +33,7 @@ fun OrderMenuNavHost(
         }
         composable(route = Screen.MenuList.route) {
             MenuListScreen(
-                backIconClick = {
+                appBarAction = {
                     navController.popBackStack()
                 },
                 onMenuClick = { menu ->
@@ -50,7 +50,7 @@ fun OrderMenuNavHost(
                 ),
         ) {
             MenuOptionScreen(
-                backIconClick = {
+                appBarAction = {
                     navController.popBackStack()
                 },
                 onNextClick = { option ->
@@ -68,7 +68,7 @@ fun OrderMenuNavHost(
                 ),
         ) {
             MenuConfirmScreen(
-                goIntro = {
+                appBarAction = {
                     navController.navigate(Screen.Intro.route) {
                         popUpTo(navController.graph.startDestinationId) {
                             inclusive = true
