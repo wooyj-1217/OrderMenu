@@ -10,7 +10,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.wooyj.ordermenu.data.toOrderOption
 import com.wooyj.ordermenu.ui.screen.confirm.MenuConfirmScreen
 import com.wooyj.ordermenu.ui.screen.intro.IntroScreen
 import com.wooyj.ordermenu.ui.screen.list.MenuListScreen
@@ -37,8 +36,7 @@ fun OrderMenuNavHost(
                     navController.popBackStack()
                 },
                 onMenuClick = { menu ->
-                    val option = menu.toOrderOption()
-                    navController.navigate(route = Screen.SelectOption.setOption(option))
+                    navController.navigate(route = Screen.SelectOption.setOption(menu))
                 },
             )
         }
@@ -46,7 +44,7 @@ fun OrderMenuNavHost(
             route = Screen.SelectOption.route,
             arguments =
                 listOf(
-                    navArgument("option") { type = NavType.StringType },
+                    navArgument("menu") { type = NavType.StringType },
                 ),
         ) {
             MenuOptionScreen(
@@ -54,7 +52,7 @@ fun OrderMenuNavHost(
                     navController.popBackStack()
                 },
                 onNextClick = { option ->
-                    // TODO("post 방식....대체 어떻게..?")
+                    // TODO("post 방식....대체 어떻게..?") -> Serialize, ExtraData -> Id기반으로 찾아라
 //                    navController.currentBackStackEntry?.savedStateHandle?.set("option", Json.encodeToString(option))
                     navController.navigate(route = Screen.ConfirmOrder.setOption(option))
                 },

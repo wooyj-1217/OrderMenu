@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -12,9 +14,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
+fun ToggleButtonWithTitle(
+    uiState: OptionGroupUiState,
+    onClick: (OptionButtonUiState) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    if (uiState.isVisible) {
+        Column(modifier = modifier) {
+            Text(text = uiState.title)
+            ToggleButtonGroup(uiState = uiState.buttonList, onClick = onClick)
+        }
+    }
+}
+
+@Composable
 fun ToggleButtonGroup(
-    uiState: ToggleButtonGroupUiState,
-    onClick: (ToggleButtonUiState) -> Unit,
+    uiState: List<OptionButtonUiState>,
+    onClick: (OptionButtonUiState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -24,7 +40,7 @@ fun ToggleButtonGroup(
                 .height(60.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        uiState.list.forEach {
+        uiState.forEach {
             ToggleButton(
                 toggle = it,
                 onClick = onClick,
@@ -38,15 +54,21 @@ fun ToggleButtonGroup(
 }
 
 @Composable
-fun ToggleButtonWithTitle(
-    uiState: ToggleButtonGroupWithTitleUiState,
-    onClick: (ToggleButtonUiState) -> Unit,
+fun ToggleButton(
+    toggle: OptionButtonUiState,
+    onClick: (OptionButtonUiState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    if (uiState.isVisible) {
-        Column(modifier = modifier) {
-            Text(text = uiState.title)
-            ToggleButtonGroup(uiState = uiState.toggleButtonGroup, onClick = onClick)
-        }
+    Button(
+        modifier = modifier.height(60.dp),
+        onClick = {
+            onClick(toggle)
+        },
+        colors =
+            ButtonDefaults.buttonColors(
+                containerColor = toggle.containerColor(),
+            ),
+    ) {
+        Text(toggle.optionName)
     }
 }

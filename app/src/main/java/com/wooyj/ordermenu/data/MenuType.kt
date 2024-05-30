@@ -108,11 +108,11 @@ data class OrderOption(
 // VO(Value Object)
 @Serializable
 sealed class MenuType(
+    // id 추가
     open val menuName: String,
     open val price: Price,
     val listTempOption: List<TempOption> = emptyList(),
     val listCaffeineOption: List<CaffeineOption> = emptyList(),
-    val listIceOption: List<IceOption> = emptyList(),
 ) {
     @Serializable
     class Coffee(
@@ -123,7 +123,6 @@ sealed class MenuType(
             price = price,
             listTempOption = listOf(TempOption.Hot, TempOption.Ice),
             listCaffeineOption = listOf(CaffeineOption.Caffeine, CaffeineOption.DeCaffeine),
-            listIceOption = listOf(IceOption.Small, IceOption.Medium, IceOption.Large),
         ) {
         override fun toString(): String {
             return Resources.getSystem().getString(R.string.coffee)
@@ -138,7 +137,6 @@ sealed class MenuType(
             menuName = menuName,
             price = price,
             listTempOption = listOf(TempOption.Ice),
-            listIceOption = listOf(IceOption.Small, IceOption.Medium, IceOption.Large),
         ) {
         override fun toString(): String {
             return Resources.getSystem().getString(R.string.beverage)
@@ -173,29 +171,6 @@ sealed class MenuType(
         }
     }
 }
-
-fun MenuType.toOrderOption(): OrderOption =
-    OrderOption(
-        menuType = this,
-        tempOption =
-            if (listTempOption.isNotEmpty()) {
-                listTempOption[0]
-            } else {
-                null
-            },
-        caffeineOption =
-            if (listCaffeineOption.isNotEmpty()) {
-                listCaffeineOption[0]
-            } else {
-                null
-            },
-        iceOption =
-            if (listIceOption.isNotEmpty()) {
-                listIceOption[0]
-            } else {
-                null
-            },
-    )
 
 val menuList =
     listOf(

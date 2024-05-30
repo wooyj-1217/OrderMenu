@@ -3,10 +3,9 @@ package com.wooyj.ordermenu.ui.screen.option
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.wooyj.ordermenu.data.IceOption
-import com.wooyj.ordermenu.data.OrderOption
+import com.wooyj.ordermenu.data.MenuType
 import com.wooyj.ordermenu.data.TempOption
-import com.wooyj.ordermenu.ui.screen.common.togglebutton.ToggleButtonUiState
+import com.wooyj.ordermenu.ui.screen.common.togglebutton.OptionButtonUiState
 import com.wooyj.ordermenu.ui.screen.common.uistate.UiState
 import com.wooyj.ordermenu.ui.screen.option.model.MenuOptionUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,45 +28,27 @@ class MenuOptionViewModel
 
         init {
             viewModelScope.launch {
-                val orderOption =
-                    Json.decodeFromString<OrderOption>(savedStateHandle.get<String>("option")!!)
-                _uiState.value =
-                    UiState.Success(data = MenuOptionUiState.fromEntity(orderOption.menuType))
+                val menuJsonString = savedStateHandle.get<String>("menu")
+                val menuType: MenuType =
+                    Json.decodeFromString<MenuType>(menuJsonString ?: throw IllegalArgumentException("Menu type is null"))
+
+                _uiState.value = UiState.Success(data = MenuOptionUiState(menuType))
             }
         }
 
-        fun clickTempOption(tempOption: ToggleButtonUiState) {
+        fun clickTempOption(tempOption: OptionButtonUiState) {
             if (uiState.value is UiState.Success) {
-                val successData = (_uiState.value as UiState.Success)
-                val data = successData.data
-
-                val updatedTempOption =
-                    data.tempOptionList.copy(
-                        toggleButtonGroup = data.tempOptionList.toggleButtonGroup.selectOption(tempOption.optionName),
-                    )
-                val updatedIceOption =
-                    if (tempOption.optionName == TempOption.Hot.toString()) {
-                        data.iceOptionList.copy(
-                            isVisible = false,
-                            toggleButtonGroup = data.iceOptionList.toggleButtonGroup.selectOption(IceOption.Small.toString()),
-                        )
-                    } else {
-                        data.iceOptionList.copy(isVisible = true)
-                    }
-
-                _uiState.update {
-                    successData.copy(
+                _uiState.value =
+                    (_uiState.value as UiState.Success).copy(
                         data =
-                            data.copy(
-                                tempOptionList = updatedTempOption,
-                                iceOptionList = updatedIceOption,
+                            (_uiState.value as UiState.Success).data.copy(
+                                tempOption = TempOption.fromString(tempOption.optionName),
                             ),
                     )
-                }
             }
         }
 
-        fun clickCaffeineOption(caffeineOption: ToggleButtonUiState) {
+        fun clickCaffeineOption(caffeineOption: OptionButtonUiState) {
             if (uiState.value is UiState.Success) {
                 val successData = (_uiState.value as UiState.Success)
                 val data = successData.data
@@ -88,7 +69,7 @@ class MenuOptionViewModel
             }
         }
 
-        fun clickIceOption(iceOption: ToggleButtonUiState) {
+        fun clickIceOption(iceOption: OptionButtonUiState) {
             if (uiState.value is UiState.Success) {
                 val successData = (_uiState.value as UiState.Success)
                 val data = successData.data
