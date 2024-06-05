@@ -108,22 +108,23 @@ data class OrderOption(
 // VO(Value Object)
 @Serializable
 sealed class MenuType(
+    open val id: Int,
     open val menuName: String,
     open val price: Price,
     val listTempOption: List<TempOption> = emptyList(),
     val listCaffeineOption: List<CaffeineOption> = emptyList(),
-    val listIceOption: List<IceOption> = emptyList(),
 ) {
     @Serializable
     class Coffee(
         @SerialName("coffeeMenuName") override val menuName: String,
         @SerialName("coffeeMenuPrice") override val price: Price,
+        @SerialName("coffeeId") override val id: Int,
     ) : MenuType(
+            id = id,
             menuName = menuName,
             price = price,
             listTempOption = listOf(TempOption.Hot, TempOption.Ice),
             listCaffeineOption = listOf(CaffeineOption.Caffeine, CaffeineOption.DeCaffeine),
-            listIceOption = listOf(IceOption.Small, IceOption.Medium, IceOption.Large),
         ) {
         override fun toString(): String {
             return Resources.getSystem().getString(R.string.coffee)
@@ -134,11 +135,12 @@ sealed class MenuType(
     class Beverage(
         @SerialName("beverageMenuName") override val menuName: String,
         @SerialName("beverageMenuPrice") override val price: Price,
-    ) : MenuType(
+        @SerialName("beverageId") override val id: Int,
+        ) : MenuType(
+            id = id,
             menuName = menuName,
             price = price,
             listTempOption = listOf(TempOption.Ice),
-            listIceOption = listOf(IceOption.Small, IceOption.Medium, IceOption.Large),
         ) {
         override fun toString(): String {
             return Resources.getSystem().getString(R.string.beverage)
@@ -149,7 +151,9 @@ sealed class MenuType(
     class Tea(
         @SerialName("teaMenuName") override val menuName: String,
         @SerialName("teaMenuPrice") override val price: Price,
-    ) : MenuType(
+        @SerialName("teaId") override val id: Int,
+        ) : MenuType(
+            id = id,
             menuName = menuName,
             price = price,
             listTempOption = listOf(TempOption.Hot),
@@ -164,7 +168,9 @@ sealed class MenuType(
     class Dessert(
         @SerialName("dessertMenuName") override val menuName: String,
         @SerialName("dessertMenuPrice") override val price: Price,
-    ) : MenuType(
+        @SerialName("dessertId") override val id: Int,
+        ) : MenuType(
+            id = id,
             menuName = menuName,
             price = price,
         ) {
@@ -174,40 +180,21 @@ sealed class MenuType(
     }
 }
 
-fun MenuType.toOrderOption(): OrderOption =
-    OrderOption(
-        menuType = this,
-        tempOption =
-            if (listTempOption.isNotEmpty()) {
-                listTempOption[0]
-            } else {
-                null
-            },
-        caffeineOption =
-            if (listCaffeineOption.isNotEmpty()) {
-                listCaffeineOption[0]
-            } else {
-                null
-            },
-        iceOption =
-            if (listIceOption.isNotEmpty()) {
-                listIceOption[0]
-            } else {
-                null
-            },
-    )
-
 val menuList =
     listOf(
-        MenuType.Coffee(menuName = "아메리카노", price = Price(1000)),
-        MenuType.Coffee(menuName = "카페라떼", price = Price(1500)),
-        MenuType.Coffee(menuName = "카푸치노", price = Price(2000)),
-        MenuType.Beverage(menuName = "오렌지에이드", price = Price(2500)),
-        MenuType.Beverage(menuName = "망고에이드", price = Price(2500)),
-        MenuType.Tea(menuName = "얼그레이티", price = Price(1000)),
-        MenuType.Tea(menuName = "페퍼민트티", price = Price(1000)),
-        MenuType.Dessert(menuName = "치즈케이크", price = Price(3000)),
-        MenuType.Dessert(menuName = "초코케이크", price = Price(3000)),
-        MenuType.Dessert(menuName = "마들렌", price = Price(1000)),
-        MenuType.Dessert(menuName = "휘낭시에", price = Price(1500)),
+        MenuType.Coffee(menuName = "아메리카노", price = Price(1000), id = 1),
+        MenuType.Coffee(menuName = "카페라떼", price = Price(1500), id = 2),
+        MenuType.Coffee(menuName = "카푸치노", price = Price(2000), id = 3),
+        MenuType.Beverage(menuName = "오렌지에이드", price = Price(2500), id = 4),
+        MenuType.Beverage(menuName = "망고에이드", price = Price(2500), id = 5),
+        MenuType.Tea(menuName = "얼그레이티", price = Price(1000), id = 6),
+        MenuType.Tea(menuName = "페퍼민트티", price = Price(1000), id = 7),
+        MenuType.Dessert(menuName = "치즈케이크", price = Price(3000), id = 8),
+        MenuType.Dessert(menuName = "초코케이크", price = Price(3000), id = 9),
+        MenuType.Dessert(menuName = "마들렌", price = Price(1000), id = 10),
+        MenuType.Dessert(menuName = "휘낭시에", price = Price(1500), id = 11),
     )
+
+
+fun Int.menuTypeFromId(): MenuType =
+    menuList.first { it.id == this }

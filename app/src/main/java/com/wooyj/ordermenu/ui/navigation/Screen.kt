@@ -12,10 +12,9 @@ sealed class Screen(
 
     data object MenuList : Screen(route = "menu/list")
 
-    data object SelectOption : Screen(route = "menu/{option}") {
-        fun setOption(option: OrderOption): String {
-            val optionString = Json.encodeToString(option).toUri()
-            return "menu/$optionString"
+    data object SelectOption : Screen(route = "menu/{menuId}") {
+        fun setMenuId(menuId: Int): String {
+            return "menu/$menuId"
         }
     }
 
