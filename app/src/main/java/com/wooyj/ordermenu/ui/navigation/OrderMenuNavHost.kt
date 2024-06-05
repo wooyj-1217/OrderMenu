@@ -44,7 +44,7 @@ fun OrderMenuNavHost(
             route = Screen.SelectOption.route,
             arguments =
                 listOf(
-                    navArgument("id") { type = NavType.IntType },
+                    navArgument("menuId") { type = NavType.IntType },
                 ),
         ) {
             MenuOptionScreen(

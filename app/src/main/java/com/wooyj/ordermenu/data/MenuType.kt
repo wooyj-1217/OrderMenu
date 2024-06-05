@@ -1,8 +1,6 @@
 package com.wooyj.ordermenu.data
 
-import android.content.res.Resources
 import android.util.Log
-import com.wooyj.ordermenu.R
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.text.NumberFormat
@@ -125,59 +123,43 @@ sealed class MenuType(
             price = price,
             listTempOption = listOf(TempOption.Hot, TempOption.Ice),
             listCaffeineOption = listOf(CaffeineOption.Caffeine, CaffeineOption.DeCaffeine),
-        ) {
-        override fun toString(): String {
-            return Resources.getSystem().getString(R.string.coffee)
-        }
-    }
+        )
 
     @Serializable
     class Beverage(
         @SerialName("beverageMenuName") override val menuName: String,
         @SerialName("beverageMenuPrice") override val price: Price,
         @SerialName("beverageId") override val id: Int,
-        ) : MenuType(
+    ) : MenuType(
             id = id,
             menuName = menuName,
             price = price,
             listTempOption = listOf(TempOption.Ice),
-        ) {
-        override fun toString(): String {
-            return Resources.getSystem().getString(R.string.beverage)
-        }
-    }
+        )
 
     @Serializable
     class Tea(
         @SerialName("teaMenuName") override val menuName: String,
         @SerialName("teaMenuPrice") override val price: Price,
         @SerialName("teaId") override val id: Int,
-        ) : MenuType(
+    ) : MenuType(
             id = id,
             menuName = menuName,
             price = price,
             listTempOption = listOf(TempOption.Hot),
             listCaffeineOption = listOf(CaffeineOption.Caffeine, CaffeineOption.DeCaffeine),
-        ) {
-        override fun toString(): String {
-            return Resources.getSystem().getString(R.string.tea)
-        }
-    }
+        )
 
     @Serializable
     class Dessert(
         @SerialName("dessertMenuName") override val menuName: String,
         @SerialName("dessertMenuPrice") override val price: Price,
         @SerialName("dessertId") override val id: Int,
-        ) : MenuType(
+    ) : MenuType(
             id = id,
             menuName = menuName,
             price = price,
-        ) {
-        override fun toString(): String {
-            return Resources.getSystem().getString(R.string.dessert)
-        }
-    }
+        )
 }
 
 val menuList =
@@ -195,6 +177,6 @@ val menuList =
         MenuType.Dessert(menuName = "휘낭시에", price = Price(1500), id = 11),
     )
 
+fun Int.menuTypeFromId(): MenuType = menuList.first { it.id == this }
 
-fun Int.menuTypeFromId(): MenuType =
-    menuList.first { it.id == this }
+fun String.menuIdFromMenuName(): Int = menuList.first { it.menuName == this }.id

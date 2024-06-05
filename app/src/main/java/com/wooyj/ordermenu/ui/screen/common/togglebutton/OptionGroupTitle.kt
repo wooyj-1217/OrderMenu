@@ -9,12 +9,27 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ToggleButtonGroup(
-    uiState: ToggleButtonGroupUiState,
-    onClick: (ToggleButtonUiState) -> Unit,
+fun OptionGroupTitle(
+    uiState: OptionGroupTitleUiState,
+    onClick: (OptionButtonUiState) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    if (uiState.isVisible) {
+        Column(modifier = modifier) {
+            Text(text = stringResource(id = uiState.title))
+            OptionButtonGroup(uiState = uiState.optionGroupUiState.list, onClick = onClick)
+        }
+    }
+}
+
+@Composable
+fun OptionButtonGroup(
+    uiState: List<OptionButtonUiState>,
+    onClick: (OptionButtonUiState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -24,29 +39,15 @@ fun ToggleButtonGroup(
                 .height(60.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        uiState.list.forEach {
-            ToggleButton(
-                toggle = it,
+        uiState.forEach {
+            OptionButton(
+                uiState = it,
                 onClick = onClick,
                 modifier =
                     Modifier
                         .weight(1f)
                         .padding(4.dp),
             )
-        }
-    }
-}
-
-@Composable
-fun ToggleButtonWithTitle(
-    uiState: ToggleButtonGroupWithTitleUiState,
-    onClick: (ToggleButtonUiState) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    if (uiState.isVisible) {
-        Column(modifier = modifier) {
-            Text(text = uiState.title)
-            ToggleButtonGroup(uiState = uiState.toggleButtonGroup, onClick = onClick)
         }
     }
 }

@@ -6,25 +6,24 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ToggleButton(
-    toggle: ToggleButtonUiState,
-    onClick: (ToggleButtonUiState) -> Unit,
+fun OptionButton(
+    uiState: OptionButtonUiState,
+    onClick: (OptionButtonUiState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Button(
         modifier = modifier.height(60.dp),
         onClick = {
-            onClick(toggle)
+            onClick(uiState)
         },
         colors =
             ButtonDefaults.buttonColors(
-                containerColor = if (toggle.isSelected) Color.DarkGray else Color.LightGray,
+                containerColor = uiState.containerColor(),
             ),
     ) {
-        Text(toggle.optionName)
+        Text(uiState.optionName)
     }
 }

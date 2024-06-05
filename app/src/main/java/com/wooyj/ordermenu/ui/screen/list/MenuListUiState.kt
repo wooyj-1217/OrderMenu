@@ -7,6 +7,6 @@ data class MenuListUiState(
 )
 
 data class Menu(
-    val header: String,
+    val header: Int,
     val menu: List<MenuTypeUI>,
 )

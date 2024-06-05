@@ -13,7 +13,6 @@ import com.wooyj.ordermenu.data.OrderOption
 import com.wooyj.ordermenu.ui.screen.common.appbar.AppNavBar
 import com.wooyj.ordermenu.ui.screen.common.appbar.AppNavBarUiState
 import com.wooyj.ordermenu.ui.screen.common.uistate.UiState
-import com.wooyj.ordermenu.ui.screen.option.model.MenuOptionUiState
 import com.wooyj.ordermenu.ui.screen.option.state.MenuOptionUI
 import com.wooyj.ordermenu.ui.theme.OrderMenuTheme
 
