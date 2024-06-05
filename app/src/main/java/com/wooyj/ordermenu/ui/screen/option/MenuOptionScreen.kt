@@ -37,9 +37,15 @@ fun MenuOptionScreen(
                     MenuOptionUI(
                         uiState = data,
                         modifier = Modifier.padding(it),
-                        clickTempOption = viewModel::clickTempOption,
-                        clickCaffeineOption = viewModel::clickCaffeineOption,
-                        clickIceOption = viewModel::clickIceOption,
+                        clickTempOption = { temp ->
+                            viewModel.sendEvents(MenuOptionEvent.ClickTempOption(temp))
+                        },
+                        clickCaffeineOption = { caffeine ->
+                            viewModel.sendEvents(MenuOptionEvent.ClickCaffeineOption(caffeine))
+                        },
+                        clickIceOption = { ice ->
+                            viewModel.sendEvents(MenuOptionEvent.ClickIceOption(ice))
+                        },
                         onNextClick = onNextClick,
                     )
                 }

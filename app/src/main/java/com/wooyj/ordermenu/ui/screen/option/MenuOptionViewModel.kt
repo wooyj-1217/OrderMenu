@@ -35,7 +35,15 @@ class MenuOptionViewModel
             }
         }
 
-        fun clickTempOption(tempOption: OptionButtonUiState) {
+        fun sendEvents(event: MenuOptionEvent) {
+            when (event) {
+                is MenuOptionEvent.ClickTempOption -> clickTempOption(event.tempOption)
+                is MenuOptionEvent.ClickCaffeineOption -> clickCaffeineOption(event.caffeineOption)
+                is MenuOptionEvent.ClickIceOption -> clickIceOption(event.iceOption)
+            }
+        }
+
+        private fun clickTempOption(tempOption: OptionButtonUiState) {
             if (uiState.value is UiState.Success) {
                 val currentState = _uiState.value as UiState.Success
                 val newTempOption = TempOption.fromString(tempOption.optionName)
@@ -53,7 +61,7 @@ class MenuOptionViewModel
             }
         }
 
-        fun clickCaffeineOption(caffeineOption: OptionButtonUiState) {
+        private fun clickCaffeineOption(caffeineOption: OptionButtonUiState) {
             if (uiState.value is UiState.Success) {
                 _uiState.update {
                     (_uiState.value as UiState.Success).copy(
@@ -66,7 +74,7 @@ class MenuOptionViewModel
             }
         }
 
-        fun clickIceOption(iceOption: OptionButtonUiState) {
+        private fun clickIceOption(iceOption: OptionButtonUiState) {
             if (uiState.value is UiState.Success) {
                 _uiState.update {
                     (_uiState.value as UiState.Success).copy(
