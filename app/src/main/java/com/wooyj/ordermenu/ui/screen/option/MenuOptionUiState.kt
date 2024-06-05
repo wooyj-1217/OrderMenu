@@ -2,11 +2,11 @@ package com.wooyj.ordermenu.ui.screen.option
 
 import androidx.compose.runtime.Composable
 import com.wooyj.ordermenu.R
-import com.wooyj.ordermenu.data.CaffeineOption
-import com.wooyj.ordermenu.data.IceOption
 import com.wooyj.ordermenu.data.MenuType
-import com.wooyj.ordermenu.data.OrderOption
-import com.wooyj.ordermenu.data.TempOption
+import com.wooyj.ordermenu.data.dto.OrderOption
+import com.wooyj.ordermenu.data.option.CaffeineOption
+import com.wooyj.ordermenu.data.option.IceOption
+import com.wooyj.ordermenu.data.option.TempOption
 import com.wooyj.ordermenu.ui.screen.common.button.option.OptionButtonUiState
 import com.wooyj.ordermenu.ui.screen.common.button.option.OptionGroupTitleUiState
 
@@ -38,10 +38,9 @@ sealed class MenuOptionUiState {
     data class Error(val exception: Throwable) : MenuOptionUiState()
 }
 
+// TODO("UiState를 개별화하는 과정에서 아래와 같이 수정했더니 경고 밑줄이 계속 나와서 그런데 이거 어떻게 해결하는 것이 좋을까요?")
 @Composable
-fun MenuOptionUiState.Success.isVisibleTempOption(): Boolean {
-    return menuType.listTempOption.isNotEmpty()
-}
+fun MenuOptionUiState.Success.isVisibleTempOption(): Boolean = menuType.listTempOption.size == 2
 
 @Composable
 fun MenuOptionUiState.Success.getTempOptionList(): List<OptionButtonUiState> =
@@ -64,7 +63,7 @@ fun MenuOptionUiState.Success.tempOptionToggleState(): OptionGroupTitleUiState =
     )
 
 @Composable
-fun MenuOptionUiState.Success.isVisibleCaffeineOption(): Boolean = menuType.listCaffeineOption.isNotEmpty()
+fun MenuOptionUiState.Success.isVisibleCaffeineOption(): Boolean = menuType.listCaffeineOption.size == 2
 
 @Composable
 fun MenuOptionUiState.Success.getCaffeineOptionList(): List<OptionButtonUiState> =

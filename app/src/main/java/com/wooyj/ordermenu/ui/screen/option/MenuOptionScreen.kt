@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.wooyj.ordermenu.data.OrderOption
+import com.wooyj.ordermenu.data.dto.OrderOption
 import com.wooyj.ordermenu.ui.screen.common.appbar.AppNavBar
 import com.wooyj.ordermenu.ui.screen.common.appbar.AppNavBarUiState
 import com.wooyj.ordermenu.ui.screen.option.state.MenuOptionUI

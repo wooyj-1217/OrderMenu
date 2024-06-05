@@ -9,7 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.wooyj.ordermenu.data.OrderOption
+import com.wooyj.ordermenu.data.dto.OrderOption
 import com.wooyj.ordermenu.ui.screen.common.button.bottom.NextButton
 import com.wooyj.ordermenu.ui.screen.common.button.option.OptionButtonUiState
 import com.wooyj.ordermenu.ui.screen.common.button.option.OptionGroupTitle

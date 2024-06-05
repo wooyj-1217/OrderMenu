@@ -1,7 +1,7 @@
 package com.wooyj.ordermenu.ui.navigation
 
 import androidx.core.net.toUri
-import com.wooyj.ordermenu.data.OrderOption
+import com.wooyj.ordermenu.data.dto.OrderOption
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 

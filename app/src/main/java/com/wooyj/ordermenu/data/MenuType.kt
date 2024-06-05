@@ -1,76 +1,12 @@
 package com.wooyj.ordermenu.data
 
 import android.util.Log
+import com.wooyj.ordermenu.data.option.CaffeineOption
+import com.wooyj.ordermenu.data.option.TempOption
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.text.NumberFormat
 import java.util.Locale
-
-enum class TempOption {
-    Hot,
-    Ice,
-    ;
-
-    override fun toString() =
-        when (this) {
-            Hot -> "HOT"
-            Ice -> "ICE"
-        }
-
-    companion object {
-        fun fromString(string: String): TempOption =
-            when (string) {
-                Hot.toString() -> Hot
-                Ice.toString() -> Ice
-                else -> throw IllegalArgumentException("Unknown TempOption")
-            }
-    }
-}
-
-enum class CaffeineOption {
-    Caffeine,
-    DeCaffeine,
-    ;
-
-    override fun toString(): String =
-        when (this) {
-            Caffeine -> "카페인"
-            DeCaffeine -> "디카페인"
-        }
-
-    companion object {
-        fun fromString(string: String): CaffeineOption =
-            when (string) {
-                Caffeine.toString() -> Caffeine
-                DeCaffeine.toString() -> DeCaffeine
-                else -> throw IllegalArgumentException("Unknown CaffeineOption")
-            }
-    }
-}
-
-enum class IceOption {
-    Small,
-    Medium,
-    Large,
-    ;
-
-    override fun toString(): String =
-        when (this) {
-            Small -> "적게"
-            Medium -> "보통"
-            Large -> "많이"
-        }
-
-    companion object {
-        fun fromString(string: String): IceOption =
-            when (string) {
-                Small.toString() -> Small
-                Medium.toString() -> Medium
-                Large.toString() -> Large
-                else -> throw IllegalArgumentException("Unknown IceOption")
-            }
-    }
-}
 
 @Serializable
 @JvmInline
@@ -83,23 +19,6 @@ value class Price(val value: Int) {
     override fun toString(): String {
         val format = NumberFormat.getNumberInstance(Locale.getDefault())
         return format.format(value)
-    }
-}
-
-// DTO(Data Transfer Object)
-@Serializable
-data class OrderOption(
-    val menuType: MenuType,
-    var tempOption: TempOption?,
-    var caffeineOption: CaffeineOption?,
-    var iceOption: IceOption?,
-) {
-    override fun toString(): String {
-        val desc = mutableListOf<String>()
-        tempOption?.let { desc.add(it.toString()) }
-        caffeineOption?.let { desc.add(it.toString()) }
-        iceOption?.let { desc.add("얼음($it)") }
-        return desc.joinToString("/")
     }
 }
 

@@ -3,10 +3,10 @@ package com.wooyj.ordermenu.ui.screen.option
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.wooyj.ordermenu.data.CaffeineOption
-import com.wooyj.ordermenu.data.IceOption
-import com.wooyj.ordermenu.data.TempOption
 import com.wooyj.ordermenu.data.menuTypeFromId
+import com.wooyj.ordermenu.data.option.CaffeineOption
+import com.wooyj.ordermenu.data.option.IceOption
+import com.wooyj.ordermenu.data.option.TempOption
 import com.wooyj.ordermenu.ui.screen.common.button.option.OptionButtonUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

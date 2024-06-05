@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.wooyj.ordermenu.data.OrderOption
+import com.wooyj.ordermenu.data.dto.OrderOption
 import com.wooyj.ordermenu.ui.screen.common.button.bottom.CloseButton
 
 @Composable

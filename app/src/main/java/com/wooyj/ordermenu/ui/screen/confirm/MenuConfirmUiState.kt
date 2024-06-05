@@ -1,6 +1,6 @@
 package com.wooyj.ordermenu.ui.screen.confirm
 
-import com.wooyj.ordermenu.data.OrderOption
+import com.wooyj.ordermenu.data.dto.OrderOption
 
 sealed class MenuConfirmUiState {
     data object None : MenuConfirmUiState()
