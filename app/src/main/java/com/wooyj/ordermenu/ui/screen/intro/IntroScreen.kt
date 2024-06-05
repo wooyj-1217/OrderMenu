@@ -10,7 +10,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wooyj.ordermenu.ui.screen.common.appbar.AppNavBar
 import com.wooyj.ordermenu.ui.screen.common.appbar.AppNavBarUiState
-import com.wooyj.ordermenu.ui.screen.common.uistate.UiState
 import com.wooyj.ordermenu.ui.screen.intro.state.IntroUI
 import com.wooyj.ordermenu.ui.theme.OrderMenuTheme
 
@@ -27,12 +26,11 @@ fun IntroScreen(
         },
     ) { innerPadding ->
         when (uiState) {
-            is UiState.Success -> {
-                val data = (uiState as UiState.Success<IntroUiState>).data
+            is IntroUiState.Success -> {
                 IntroUI(
                     modifier = modifier.padding(innerPadding),
                     onNextNavigation = onNextNavigation,
-                    titleText = data.text,
+                    titleText = (uiState as IntroUiState.Success).text,
                 )
             }
 

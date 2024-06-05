@@ -12,7 +12,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wooyj.ordermenu.data.OrderOption
 import com.wooyj.ordermenu.ui.screen.common.appbar.AppNavBar
 import com.wooyj.ordermenu.ui.screen.common.appbar.AppNavBarUiState
-import com.wooyj.ordermenu.ui.screen.common.uistate.UiState
 import com.wooyj.ordermenu.ui.screen.option.state.MenuOptionUI
 import com.wooyj.ordermenu.ui.theme.OrderMenuTheme
 
@@ -32,10 +31,9 @@ fun MenuOptionScreen(
         },
         content = {
             when (uiState) {
-                is UiState.Success -> {
-                    val data = (uiState as UiState.Success<MenuOptionUiState>).data
+                is MenuOptionUiState.Success -> {
                     MenuOptionUI(
-                        uiState = data,
+                        uiState = uiState as MenuOptionUiState.Success,
                         modifier = Modifier.padding(it),
                         clickTempOption = { temp ->
                             viewModel.sendEvents(MenuOptionEvent.ClickTempOption(temp))

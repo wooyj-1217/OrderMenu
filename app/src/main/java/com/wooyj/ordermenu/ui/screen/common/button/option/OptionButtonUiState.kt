@@ -1,4 +1,4 @@
-package com.wooyj.ordermenu.ui.screen.common.togglebutton
+package com.wooyj.ordermenu.ui.screen.common.button.option
 
 import androidx.compose.ui.graphics.Color
 

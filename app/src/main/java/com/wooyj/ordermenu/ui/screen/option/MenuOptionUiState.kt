@@ -7,47 +7,54 @@ import com.wooyj.ordermenu.data.IceOption
 import com.wooyj.ordermenu.data.MenuType
 import com.wooyj.ordermenu.data.OrderOption
 import com.wooyj.ordermenu.data.TempOption
-import com.wooyj.ordermenu.ui.screen.common.togglebutton.OptionButtonUiState
-import com.wooyj.ordermenu.ui.screen.common.togglebutton.OptionGroupTitleUiState
+import com.wooyj.ordermenu.ui.screen.common.button.option.OptionButtonUiState
+import com.wooyj.ordermenu.ui.screen.common.button.option.OptionGroupTitleUiState
 
-data class MenuOptionUiState(
-    val menuType: MenuType, // VO
-    val tempOption: TempOption? = if (menuType.listTempOption.isNotEmpty()) menuType.listTempOption[0] else null, // DTO
-    val caffeineOption: CaffeineOption? = if (menuType.listCaffeineOption.isNotEmpty()) menuType.listCaffeineOption[0] else null, // DTO
-    val iceOption: IceOption? =
-        if (menuType.listTempOption.isNotEmpty() && menuType.listTempOption[0] == TempOption.Ice) {
-            IceOption.Small
-        } else {
-            null
-        }, // DTO
-) {
-    fun toEntity(): OrderOption =
-        OrderOption(
-            menuType = menuType,
-            tempOption = tempOption,
-            caffeineOption = caffeineOption,
-            iceOption = iceOption,
-        )
+sealed class MenuOptionUiState {
+    data object None : MenuOptionUiState()
+
+    data object Loading : MenuOptionUiState()
+
+    data class Success(
+        val menuType: MenuType, // VO
+        val tempOption: TempOption? = if (menuType.listTempOption.isNotEmpty()) menuType.listTempOption[0] else null, // DTO
+        val caffeineOption: CaffeineOption? = if (menuType.listCaffeineOption.isNotEmpty()) menuType.listCaffeineOption[0] else null, // DTO
+        val iceOption: IceOption? =
+            if (menuType.listTempOption.isNotEmpty() && menuType.listTempOption[0] == TempOption.Ice) {
+                IceOption.Small
+            } else {
+                null
+            }, // DTO
+    ) : MenuOptionUiState() {
+        fun toEntity(): OrderOption =
+            OrderOption(
+                menuType = menuType,
+                tempOption = tempOption,
+                caffeineOption = caffeineOption,
+                iceOption = iceOption,
+            )
+    }
+
+    data class Error(val exception: Throwable) : MenuOptionUiState()
 }
 
 @Composable
-fun MenuOptionUiState.isVisibleTempOption(): Boolean {
+fun MenuOptionUiState.Success.isVisibleTempOption(): Boolean {
     return menuType.listTempOption.isNotEmpty()
 }
 
 @Composable
-fun MenuOptionUiState.getTempOptionList(): List<OptionButtonUiState> {
-    return menuType.listTempOption.map {
+fun MenuOptionUiState.Success.getTempOptionList(): List<OptionButtonUiState> =
+    menuType.listTempOption.map {
         OptionButtonUiState(
             optionName = it.toString(),
             isSelected = tempOption == it,
         )
     }
-}
 
 @Composable
-fun MenuOptionUiState.tempOptionToggleState(): OptionGroupTitleUiState {
-    return OptionGroupTitleUiState(
+fun MenuOptionUiState.Success.tempOptionToggleState(): OptionGroupTitleUiState =
+    OptionGroupTitleUiState(
         isVisible = isVisibleTempOption(),
         title = R.string.basic,
         optionGroupUiState =
@@ -55,26 +62,22 @@ fun MenuOptionUiState.tempOptionToggleState(): OptionGroupTitleUiState {
                 list = getTempOptionList(),
             ),
     )
-}
 
 @Composable
-fun MenuOptionUiState.isVisibleCaffeineOption(): Boolean {
-    return menuType.listCaffeineOption.isNotEmpty()
-}
+fun MenuOptionUiState.Success.isVisibleCaffeineOption(): Boolean = menuType.listCaffeineOption.isNotEmpty()
 
 @Composable
-fun MenuOptionUiState.getCaffeineOptionList(): List<OptionButtonUiState> {
-    return menuType.listCaffeineOption.map {
+fun MenuOptionUiState.Success.getCaffeineOptionList(): List<OptionButtonUiState> =
+    menuType.listCaffeineOption.map {
         OptionButtonUiState(
             optionName = it.toString(),
             isSelected = caffeineOption == it,
         )
     }
-}
 
 @Composable
-fun MenuOptionUiState.caffeineOptionToggleState(): OptionGroupTitleUiState {
-    return OptionGroupTitleUiState(
+fun MenuOptionUiState.Success.caffeineOptionToggleState(): OptionGroupTitleUiState =
+    OptionGroupTitleUiState(
         isVisible = isVisibleCaffeineOption(),
         title = R.string.decaffeine,
         optionGroupUiState =
@@ -82,13 +85,13 @@ fun MenuOptionUiState.caffeineOptionToggleState(): OptionGroupTitleUiState {
                 list = getCaffeineOptionList(),
             ),
     )
-}
 
 @Composable
-fun MenuOptionUiState.isVisibleIceOption(): Boolean = menuType.listTempOption.contains(TempOption.Ice) && tempOption == TempOption.Ice
+fun MenuOptionUiState.Success.isVisibleIceOption(): Boolean =
+    menuType.listTempOption.contains(TempOption.Ice) && tempOption == TempOption.Ice
 
 @Composable
-fun MenuOptionUiState.getIceOptionList(): List<OptionButtonUiState> =
+fun MenuOptionUiState.Success.getIceOptionList(): List<OptionButtonUiState> =
     IceOption.entries.map {
         OptionButtonUiState(
             optionName = it.toString(),
@@ -97,7 +100,7 @@ fun MenuOptionUiState.getIceOptionList(): List<OptionButtonUiState> =
     }
 
 @Composable
-fun MenuOptionUiState.iceOptionToggleState(): OptionGroupTitleUiState =
+fun MenuOptionUiState.Success.iceOptionToggleState(): OptionGroupTitleUiState =
     OptionGroupTitleUiState(
         isVisible = isVisibleIceOption(),
         title = R.string.ice,

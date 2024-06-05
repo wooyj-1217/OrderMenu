@@ -10,9 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.wooyj.ordermenu.data.OrderOption
-import com.wooyj.ordermenu.ui.screen.common.button.NextButton
-import com.wooyj.ordermenu.ui.screen.common.togglebutton.OptionButtonUiState
-import com.wooyj.ordermenu.ui.screen.common.togglebutton.OptionGroupTitle
+import com.wooyj.ordermenu.ui.screen.common.button.bottom.NextButton
+import com.wooyj.ordermenu.ui.screen.common.button.option.OptionButtonUiState
+import com.wooyj.ordermenu.ui.screen.common.button.option.OptionGroupTitle
 import com.wooyj.ordermenu.ui.screen.option.MenuOptionUiState
 import com.wooyj.ordermenu.ui.screen.option.caffeineOptionToggleState
 import com.wooyj.ordermenu.ui.screen.option.iceOptionToggleState
@@ -20,7 +20,7 @@ import com.wooyj.ordermenu.ui.screen.option.tempOptionToggleState
 
 @Composable
 fun MenuOptionUI(
-    uiState: MenuOptionUiState,
+    uiState: MenuOptionUiState.Success,
     onNextClick: (OrderOption) -> Unit,
     clickTempOption: (OptionButtonUiState) -> Unit,
     clickCaffeineOption: (OptionButtonUiState) -> Unit,

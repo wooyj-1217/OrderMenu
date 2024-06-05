@@ -1,4 +1,4 @@
-package com.wooyj.ordermenu.ui.screen.common.button
+package com.wooyj.ordermenu.ui.screen.common.button.bottom
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height

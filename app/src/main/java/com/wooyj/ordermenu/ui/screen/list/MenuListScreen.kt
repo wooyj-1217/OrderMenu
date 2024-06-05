@@ -12,7 +12,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wooyj.ordermenu.data.MenuType
 import com.wooyj.ordermenu.ui.screen.common.appbar.AppNavBar
 import com.wooyj.ordermenu.ui.screen.common.appbar.AppNavBarUiState
-import com.wooyj.ordermenu.ui.screen.common.uistate.UiState
 import com.wooyj.ordermenu.ui.screen.list.state.MenuListUI
 import com.wooyj.ordermenu.ui.theme.OrderMenuTheme
 
@@ -31,13 +30,13 @@ fun MenuListScreen(
         },
         content = {
             when (uiState) {
-                is UiState.Success -> {
+                is MenuListUiState.Success -> {
                     MenuListUI(
                         modifier = Modifier.padding(it),
                         onMenuClick = { menuTypeUI ->
                             onMenuClick(menuTypeUI.toEntity())
                         },
-                        menuList = (uiState as UiState.Success).data.menuList,
+                        menuList = (uiState as MenuListUiState.Success).menuList,
                     )
                 }
                 else -> Unit

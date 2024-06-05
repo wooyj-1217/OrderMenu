@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.wooyj.ordermenu.ui.screen.common.button.NextButton
+import com.wooyj.ordermenu.ui.screen.common.button.bottom.NextButton
 
 @Composable
 fun IntroUI(

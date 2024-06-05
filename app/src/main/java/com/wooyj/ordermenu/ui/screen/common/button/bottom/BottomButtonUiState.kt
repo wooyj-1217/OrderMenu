@@ -1,4 +1,4 @@
-package com.wooyj.ordermenu.ui.screen.common.button
+package com.wooyj.ordermenu.ui.screen.common.button.bottom
 
 import com.wooyj.ordermenu.R
 

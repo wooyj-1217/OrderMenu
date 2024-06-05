@@ -7,8 +7,7 @@ import com.wooyj.ordermenu.data.CaffeineOption
 import com.wooyj.ordermenu.data.IceOption
 import com.wooyj.ordermenu.data.TempOption
 import com.wooyj.ordermenu.data.menuTypeFromId
-import com.wooyj.ordermenu.ui.screen.common.togglebutton.OptionButtonUiState
-import com.wooyj.ordermenu.ui.screen.common.uistate.UiState
+import com.wooyj.ordermenu.ui.screen.common.button.option.OptionButtonUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,15 +22,15 @@ class MenuOptionViewModel
     constructor(
         savedStateHandle: SavedStateHandle,
     ) : ViewModel() {
-        private var _uiState = MutableStateFlow<UiState<MenuOptionUiState>>(UiState.None)
-        val uiState: StateFlow<UiState<MenuOptionUiState>> = _uiState.asStateFlow()
+        private var _uiState = MutableStateFlow<MenuOptionUiState>(MenuOptionUiState.None)
+        val uiState: StateFlow<MenuOptionUiState> = _uiState.asStateFlow()
 
         init {
             viewModelScope.launch {
                 val menuType = savedStateHandle.get<Int>("menuId")!!.menuTypeFromId()
 
                 _uiState.value =
-                    UiState.Success(data = MenuOptionUiState(menuType = menuType))
+                    MenuOptionUiState.Success(menuType = menuType)
             }
         }
 
@@ -44,44 +43,35 @@ class MenuOptionViewModel
         }
 
         private fun clickTempOption(tempOption: OptionButtonUiState) {
-            if (uiState.value is UiState.Success) {
-                val currentState = _uiState.value as UiState.Success
+            if (uiState.value is MenuOptionUiState.Success) {
+                val currentState = _uiState.value as MenuOptionUiState.Success
                 val newTempOption = TempOption.fromString(tempOption.optionName)
                 val newIceOption = IceOption.Small
 
                 _uiState.update {
                     currentState.copy(
-                        data =
-                            currentState.data.copy(
-                                tempOption = newTempOption,
-                                iceOption = newIceOption,
-                            ),
+                        tempOption = newTempOption,
+                        iceOption = newIceOption,
                     )
                 }
             }
         }
 
         private fun clickCaffeineOption(caffeineOption: OptionButtonUiState) {
-            if (uiState.value is UiState.Success) {
+            if (uiState.value is MenuOptionUiState.Success) {
                 _uiState.update {
-                    (_uiState.value as UiState.Success).copy(
-                        data =
-                            (_uiState.value as UiState.Success).data.copy(
-                                caffeineOption = CaffeineOption.fromString(caffeineOption.optionName),
-                            ),
+                    (_uiState.value as MenuOptionUiState.Success).copy(
+                        caffeineOption = CaffeineOption.fromString(caffeineOption.optionName),
                     )
                 }
             }
         }
 
         private fun clickIceOption(iceOption: OptionButtonUiState) {
-            if (uiState.value is UiState.Success) {
+            if (uiState.value is MenuOptionUiState.Success) {
                 _uiState.update {
-                    (_uiState.value as UiState.Success).copy(
-                        data =
-                            (_uiState.value as UiState.Success).data.copy(
-                                iceOption = IceOption.fromString(iceOption.optionName),
-                            ),
+                    (_uiState.value as MenuOptionUiState.Success).copy(
+                        iceOption = IceOption.fromString(iceOption.optionName),
                     )
                 }
             }

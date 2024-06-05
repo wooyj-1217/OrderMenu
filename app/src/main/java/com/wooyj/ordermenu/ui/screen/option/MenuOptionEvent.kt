@@ -1,6 +1,6 @@
 package com.wooyj.ordermenu.ui.screen.option
 
-import com.wooyj.ordermenu.ui.screen.common.togglebutton.OptionButtonUiState
+import com.wooyj.ordermenu.ui.screen.common.button.option.OptionButtonUiState
 
 sealed class MenuOptionEvent {
     data class ClickTempOption(val tempOption: OptionButtonUiState) : MenuOptionEvent()

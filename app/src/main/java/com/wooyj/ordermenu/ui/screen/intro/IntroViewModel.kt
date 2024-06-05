@@ -3,7 +3,6 @@ package com.wooyj.ordermenu.ui.screen.intro
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.wooyj.ordermenu.R
-import com.wooyj.ordermenu.ui.screen.common.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,10 +14,10 @@ class IntroViewModel
     constructor(
         application: Application,
     ) : ViewModel() {
-        private val _uiState: MutableStateFlow<UiState<IntroUiState>> = MutableStateFlow(UiState.None)
+        private val _uiState: MutableStateFlow<IntroUiState> = MutableStateFlow(IntroUiState.None)
         val uiState = _uiState.asStateFlow()
 
         init {
-            _uiState.value = UiState.Success(data = IntroUiState(text = application.getString(R.string.intro_message)))
+            _uiState.value = IntroUiState.Success(text = application.getString(R.string.intro_message))
         }
     }
