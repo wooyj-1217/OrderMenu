@@ -11,8 +11,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun OptionButton(
     uiState: OptionButtonUiState,
-    onClick: (OptionButtonUiState) -> Unit,
     modifier: Modifier = Modifier,
+    onClick: (OptionButtonUiState) -> Unit,
 ) {
     Button(
         modifier = modifier.height(60.dp),

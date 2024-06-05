@@ -22,7 +22,13 @@ fun IntroUI(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
-        Column(modifier = Modifier.padding(start = 16.dp, top = 80.dp)) {
+        Column(
+            modifier =
+                Modifier.padding(
+                    start = 16.dp,
+                    top = 80.dp,
+                ),
+        ) {
             Text(
                 text = titleText,
                 fontSize = 30.sp,

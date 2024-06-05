@@ -24,6 +24,7 @@ class MenuListViewModel
                     .map { (header, list) ->
                         Menu(header = header, menu = list)
                     }
+
             _uiState.value = MenuListUiState.Success(menuList = data)
         }
     }

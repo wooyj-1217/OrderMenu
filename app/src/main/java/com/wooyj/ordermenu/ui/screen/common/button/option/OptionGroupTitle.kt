@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun OptionGroupTitle(
     uiState: OptionGroupTitleUiState,
-    onClick: (OptionButtonUiState) -> Unit,
     modifier: Modifier = Modifier,
+    onClick: (OptionButtonUiState) -> Unit,
 ) {
     if (uiState.isVisible) {
         Column(modifier = modifier) {
@@ -29,8 +29,8 @@ fun OptionGroupTitle(
 @Composable
 fun OptionButtonGroup(
     uiState: List<OptionButtonUiState>,
-    onClick: (OptionButtonUiState) -> Unit,
     modifier: Modifier = Modifier,
+    onClick: (OptionButtonUiState) -> Unit,
 ) {
     Row(
         modifier =
