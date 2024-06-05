@@ -11,7 +11,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wooyj.ordermenu.ui.screen.common.appbar.AppNavBar
 import com.wooyj.ordermenu.ui.screen.common.appbar.AppNavBarUiState
-import com.wooyj.ordermenu.ui.screen.common.uistate.UiState
 import com.wooyj.ordermenu.ui.screen.confirm.state.MenuConfirmUI
 import com.wooyj.ordermenu.ui.theme.OrderMenuTheme
 
@@ -30,11 +29,11 @@ fun MenuConfirmScreen(
         },
         content = {
             when (uiState) {
-                is UiState.Success -> {
+                is MenuConfirmUiState.Success -> {
                     MenuConfirmUI(
                         modifier = Modifier.padding(it),
                         goIntro = appBarAction,
-                        option = (uiState as UiState.Success<MenuConfirmUiState>).data.orderOption,
+                        option = (uiState as MenuConfirmUiState.Success).orderOption,
                     )
                 }
 

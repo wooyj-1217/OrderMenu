@@ -5,7 +5,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wooyj.ordermenu.data.OrderOption
-import com.wooyj.ordermenu.ui.screen.common.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,14 +19,14 @@ class MenuConfirmViewModel
     constructor(
         private val savedStateHandle: SavedStateHandle,
     ) : ViewModel() {
-        private var _uiState = MutableStateFlow<UiState<MenuConfirmUiState>>(UiState.Loading)
-        val uiState: StateFlow<UiState<MenuConfirmUiState>> = _uiState.asStateFlow()
+        private var _uiState = MutableStateFlow<MenuConfirmUiState>(MenuConfirmUiState.Loading)
+        val uiState: StateFlow<MenuConfirmUiState> = _uiState.asStateFlow()
 
         init {
             viewModelScope.launch {
                 val orderOption = Json.decodeFromString<OrderOption>(savedStateHandle.get<String>("option")!!)
                 Log.d("OrderOption", "$orderOption")
-                _uiState.value = UiState.Success(data = MenuConfirmUiState(orderOption = orderOption))
+                _uiState.value = MenuConfirmUiState.Success(orderOption = orderOption)
             }
         }
     }
