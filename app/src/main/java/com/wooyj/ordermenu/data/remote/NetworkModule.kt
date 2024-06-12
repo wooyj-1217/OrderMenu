@@ -1,15 +1,13 @@
 package com.wooyj.ordermenu.data.remote
 
-import com.wooyj.ordermenu.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -22,23 +20,20 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    // Http Logging Interceptor
-    @Singleton
-    @Provides // @Binds
-    fun provideBodyLoggingInterceptor(): HttpLoggingInterceptor =
-        HttpLoggingInterceptor { message ->
-            if (message.length < 16 * 1024 * 1024) {
-                Timber.tag("NetworkModule : ").d(message)
-            }
-        }.setLevel(HttpLoggingInterceptor.Level.BODY)
-
     // Okhttp
     @Singleton
     @Provides
-    fun provideOkhttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
+    fun provideOkhttpClient(
+        loggingInterceptor: Interceptor,
+        // authInterceptor: Interceptor,
+        // networkInterceptor: Interceptor,
+        @ConnectTimeout connectTimeout: Long,
+        // @WriteTimeout writeTimeout: Long,
+        // @ReadTimeout readTimeout: Long,
+    ): OkHttpClient =
         OkHttpClient
             .Builder()
-            .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
+            .connectTimeout(connectTimeout, TimeUnit.SECONDS)
             .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
             .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
             .addInterceptor(loggingInterceptor)
@@ -47,10 +42,13 @@ object NetworkModule {
     // Retrofit
     @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
+    fun provideRetrofit(
+        okHttpClient: OkHttpClient,
+        @BaseUrl baseUrl: String,
+    ): Retrofit =
         Retrofit
             .Builder()
-            .baseUrl(BuildConfig.BASE_URL)
+            .baseUrl(baseUrl)
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create().asLenient())
             .build()
