@@ -34,7 +34,9 @@ sealed class MenuOptionUiState {
             )
     }
 
-    data class Error(val exception: Throwable) : MenuOptionUiState()
+    data class Error(
+        val exception: Throwable,
+    ) : MenuOptionUiState()
 }
 
 // TODO("UiState를 개별화하는 과정에서 아래와 같이 수정했더니 경고 밑줄이 계속 나와서 그런데 이거 어떻게 해결하는 것이 좋을까요?")

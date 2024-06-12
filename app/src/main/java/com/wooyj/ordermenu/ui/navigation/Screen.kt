@@ -13,9 +13,7 @@ sealed class Screen(
     data object MenuList : Screen(route = "menu/list")
 
     data object SelectOption : Screen(route = "menu/{menuId}") {
-        fun setMenuId(menuId: Int): String {
-            return "menu/$menuId"
-        }
+        fun setMenuId(menuId: Int): String = "menu/$menuId"
     }
 
     data object ConfirmOrder : Screen(route = "menu/confirm/{option}") {

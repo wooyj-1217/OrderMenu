@@ -7,9 +7,13 @@ sealed class MenuListUiState {
 
     data object Loading : MenuListUiState()
 
-    data class Success(val menuList: List<Menu>) : MenuListUiState()
+    data class Success(
+        val menuList: List<Menu>,
+    ) : MenuListUiState()
 
-    data class Error(val exception: Throwable) : MenuListUiState()
+    data class Error(
+        val exception: Throwable,
+    ) : MenuListUiState()
 }
 
 data class Menu(

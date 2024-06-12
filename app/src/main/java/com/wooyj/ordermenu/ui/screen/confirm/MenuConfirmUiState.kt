@@ -7,7 +7,11 @@ sealed class MenuConfirmUiState {
 
     data object Loading : MenuConfirmUiState()
 
-    data class Success(val orderOption: OrderOption) : MenuConfirmUiState()
+    data class Success(
+        val orderOption: OrderOption,
+    ) : MenuConfirmUiState()
 
-    data class Error(val exception: Throwable) : MenuConfirmUiState()
+    data class Error(
+        val exception: Throwable,
+    ) : MenuConfirmUiState()
 }
