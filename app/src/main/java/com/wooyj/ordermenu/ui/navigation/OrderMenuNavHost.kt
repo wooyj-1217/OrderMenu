@@ -32,7 +32,7 @@ fun OrderMenuNavHost(
         }
         composable(route = Screen.MenuList.route) {
             MenuListScreen(
-                appBarAction = {
+                onAppBarAction = {
                     navController.popBackStack()
                 },
                 onMenuClick = { menu ->
@@ -48,7 +48,7 @@ fun OrderMenuNavHost(
                 ),
         ) {
             MenuOptionScreen(
-                appBarAction = {
+                onAppBarAction = {
                     navController.popBackStack()
                 },
                 onNextClick = { option ->

@@ -20,6 +20,7 @@ fun IntroScreen(
     onNextNavigation: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     Scaffold(
         topBar = {
             AppNavBar(uiState = AppNavBarUiState.Intro, navAction = {})

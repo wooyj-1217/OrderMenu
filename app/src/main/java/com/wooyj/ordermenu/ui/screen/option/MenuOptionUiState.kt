@@ -1,6 +1,5 @@
 package com.wooyj.ordermenu.ui.screen.option
 
-import androidx.compose.runtime.Composable
 import com.wooyj.ordermenu.R
 import com.wooyj.ordermenu.data.MenuType
 import com.wooyj.ordermenu.data.dto.OrderOption
@@ -38,11 +37,8 @@ sealed class MenuOptionUiState {
     data class Error(val exception: Throwable) : MenuOptionUiState()
 }
 
-// TODO("UiState를 개별화하는 과정에서 아래와 같이 수정했더니 경고 밑줄이 계속 나와서 그런데 이거 어떻게 해결하는 것이 좋을까요?")
-@Composable
 fun MenuOptionUiState.Success.isVisibleTempOption(): Boolean = menuType.listTempOption.size == 2
 
-@Composable
 fun MenuOptionUiState.Success.getTempOptionList(): List<OptionButtonUiState> =
     menuType.listTempOption.map {
         OptionButtonUiState(
@@ -51,7 +47,6 @@ fun MenuOptionUiState.Success.getTempOptionList(): List<OptionButtonUiState> =
         )
     }
 
-@Composable
 fun MenuOptionUiState.Success.tempOptionToggleState(): OptionGroupTitleUiState =
     OptionGroupTitleUiState(
         isVisible = isVisibleTempOption(),
@@ -62,10 +57,8 @@ fun MenuOptionUiState.Success.tempOptionToggleState(): OptionGroupTitleUiState =
             ),
     )
 
-@Composable
 fun MenuOptionUiState.Success.isVisibleCaffeineOption(): Boolean = menuType.listCaffeineOption.size == 2
 
-@Composable
 fun MenuOptionUiState.Success.getCaffeineOptionList(): List<OptionButtonUiState> =
     menuType.listCaffeineOption.map {
         OptionButtonUiState(
@@ -74,7 +67,6 @@ fun MenuOptionUiState.Success.getCaffeineOptionList(): List<OptionButtonUiState>
         )
     }
 
-@Composable
 fun MenuOptionUiState.Success.caffeineOptionToggleState(): OptionGroupTitleUiState =
     OptionGroupTitleUiState(
         isVisible = isVisibleCaffeineOption(),
@@ -85,11 +77,9 @@ fun MenuOptionUiState.Success.caffeineOptionToggleState(): OptionGroupTitleUiSta
             ),
     )
 
-@Composable
 fun MenuOptionUiState.Success.isVisibleIceOption(): Boolean =
     menuType.listTempOption.contains(TempOption.Ice) && tempOption == TempOption.Ice
 
-@Composable
 fun MenuOptionUiState.Success.getIceOptionList(): List<OptionButtonUiState> =
     IceOption.entries.map {
         OptionButtonUiState(
@@ -98,7 +88,6 @@ fun MenuOptionUiState.Success.getIceOptionList(): List<OptionButtonUiState> =
         )
     }
 
-@Composable
 fun MenuOptionUiState.Success.iceOptionToggleState(): OptionGroupTitleUiState =
     OptionGroupTitleUiState(
         isVisible = isVisibleIceOption(),
