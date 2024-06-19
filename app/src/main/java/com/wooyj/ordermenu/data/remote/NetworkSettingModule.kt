@@ -12,11 +12,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkSettingModule {
-
     @Provides
     @Singleton
     @BaseUrl
-    fun provideBaseUrl(@ApplicationContext context: Context) = context.getString(R.string.base_url)
+    fun provideBaseUrl(
+        @ApplicationContext context: Context,
+    ) = context.getString(R.string.base_url)
 
     @Provides
     @Singleton
@@ -32,5 +33,4 @@ object NetworkSettingModule {
     @Singleton
     @WriteTimeOut
     fun provideWriteTimeOut(): Long = 20L
-
 }

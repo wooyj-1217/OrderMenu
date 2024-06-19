@@ -10,7 +10,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object ReleaseInterceptorModule {
-
     @Provides
     @Singleton
     fun provideNoneLoggingInterceptor(): HttpLoggingInterceptor = HttpLoggingInterceptor { }.setLevel(HttpLoggingInterceptor.Level.NONE)

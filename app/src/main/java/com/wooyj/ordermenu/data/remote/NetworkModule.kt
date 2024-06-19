@@ -1,7 +1,6 @@
 package com.wooyj.ordermenu.data.remote
 
 import com.wooyj.ordermenu.BuildConfig
-import com.wooyj.ordermenu.data.remote.api.DogApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,14 +15,13 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object NetworkModule {
-
     @Singleton
     @Provides
     fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
         @ConnectionTimeOut connectionTimeOut: Long,
         @ReadTimeOut readTimeOut: Long,
-        @WriteTimeOut writeTimeOut: Long
+        @WriteTimeOut writeTimeOut: Long,
     ): OkHttpClient =
         OkHttpClient
             .Builder()
@@ -42,9 +40,4 @@ object NetworkModule {
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create().asLenient())
             .build()
-
-    @Singleton
-    @Provides
-    fun provideDogApi(retrofit: Retrofit): DogApi =
-        retrofit.create(DogApi::class.java)
 }
