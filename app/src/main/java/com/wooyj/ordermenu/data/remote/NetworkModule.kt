@@ -1,6 +1,5 @@
 package com.wooyj.ordermenu.data.remote
 
-import com.wooyj.ordermenu.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,7 +32,10 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient, @BaseUrl baseUrl: String): Retrofit =
+    fun provideRetrofit(
+        okHttpClient: OkHttpClient,
+        @BaseUrl baseUrl: String,
+    ): Retrofit =
         Retrofit
             .Builder()
             .baseUrl(baseUrl)
