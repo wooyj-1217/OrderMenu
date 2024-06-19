@@ -1,6 +1,7 @@
 package com.wooyj.ordermenu.ui.screen.common.appbar
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.ui.graphics.vector.ImageVector
 
@@ -19,7 +20,7 @@ fun AppNavBarUiState.isDisplay(): Boolean = this !is AppNavBarUiState.Intro
 fun AppNavBarUiState.icon(): ImageVector =
     when (this) {
         AppNavBarUiState.Intro -> throw IllegalStateException("Intro screen does not have a navigation icon")
-        else -> Icons.Default.ArrowBack
+        else -> Icons.AutoMirrored.Filled.ArrowBack
     }
 
 fun AppNavBarUiState.title(): String =

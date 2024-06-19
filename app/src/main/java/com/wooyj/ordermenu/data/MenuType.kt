@@ -10,7 +10,9 @@ import java.util.Locale
 
 @Serializable
 @JvmInline
-value class Price(val value: Int) {
+value class Price(
+    val value: Int,
+) {
     init {
         Log.d("Price", "$value")
         require(value > 0) { "값은 항상 0보다 커야 합니다." }

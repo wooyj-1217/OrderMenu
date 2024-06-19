@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("kotlin-parcelize")
     id("com.google.dagger.hilt.android")
+    id("com.google.devtools.ksp")
     kotlin("kapt")
     kotlin("plugin.serialization")
 }
@@ -25,12 +26,16 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "BASE_URL", "\"https://dog.ceo/api/breeds/\"")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+            buildConfigField("String", "BASE_URL", "\"https://dog.ceo/api/breeds/\"")
         }
     }
     compileOptions {
@@ -42,9 +47,10 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
     packaging {
         resources {
@@ -55,11 +61,8 @@ android {
 
 dependencies {
 
-    // Compose Lint : Compose Code Style 일관성을 위함
-    lintChecks("com.slack.lint.compose:compose-lint-checks:1.3.1")
-
-    implementation("com.google.dagger:hilt-android:2.44")
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
@@ -81,4 +84,41 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // OkHttp3
+    // - define a BOM and its version
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
+    // - define any required OkHttp artifacts without version
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:logging-interceptor")
+
+    // Retrofit2
+    val retrofitVersion = "2.11.0"
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion") // for moshi converter
+    ksp("com.squareup.moshi:moshi-kotlin-codegen:1.15.1")
+
+    // Timber
+    implementation("com.jakewharton.timber:timber:5.0.1")
+
+    // Hilt
+    implementation("com.google.dagger:hilt-android:2.44")
+    ksp("com.google.dagger:hilt-android-compiler:2.44")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
+    // DataStore
+    // - Preferences DataStore (SharedPreferences like APIs)
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+    // - Typed DataStore (Typed API surface, such as Proto)
+    implementation("androidx.datastore:datastore:1.1.1")
+
+    // Room
+    val roomVersion = "2.6.1"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    // To use Kotlin Symbol Processing (KSP)
+    // - kapt에서 KSP로 마이그레이션 : https://developer.android.com/build/migrate-to-ksp
+    ksp("androidx.room:room-compiler:$roomVersion")
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:$roomVersion")
 }

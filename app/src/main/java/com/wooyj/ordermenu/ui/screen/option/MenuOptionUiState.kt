@@ -34,7 +34,9 @@ sealed class MenuOptionUiState {
             )
     }
 
-    data class Error(val exception: Throwable) : MenuOptionUiState()
+    data class Error(
+        val exception: Throwable,
+    ) : MenuOptionUiState()
 }
 
 fun MenuOptionUiState.Success.isVisibleTempOption(): Boolean = menuType.listTempOption.size == 2
