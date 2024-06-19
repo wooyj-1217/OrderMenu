@@ -27,7 +27,6 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"https://dog.ceo/api/breeds/\"")
         }
         release {
             isMinifyEnabled = false
@@ -35,7 +34,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
-            buildConfigField("String", "BASE_URL", "\"https://dog.ceo/api/breeds/\"")
         }
     }
     compileOptions {
@@ -47,7 +45,6 @@ android {
     }
     buildFeatures {
         compose = true
-        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.14"
