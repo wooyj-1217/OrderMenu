@@ -1,4 +1,4 @@
-package com.wooyj.ordermenu.data.local.datastore.room
+package com.wooyj.ordermenu.data.local.room
 
 import android.content.Context
 import androidx.room.Database
