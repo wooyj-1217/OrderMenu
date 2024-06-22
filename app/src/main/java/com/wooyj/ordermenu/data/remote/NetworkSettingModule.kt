@@ -21,16 +21,26 @@ object NetworkSettingModule {
 
     @Provides
     @Singleton
+    fun provideNetworkSetting(
+        @ApplicationContext context: Context,
+    ) = NetworkSetting(
+        connectionTimeOut = context.resources.getInteger(R.integer.time_out).toLong(),
+        readTimeOut = context.resources.getInteger(R.integer.time_out).toLong(),
+        writeTimeOut = context.resources.getInteger(R.integer.time_out).toLong(),
+    )
+
+    @Provides
+    @Singleton
     @ConnectionTimeOut
-    fun provideConnectionTimeOut(): Long = 20L
+    fun provideConnectionTimeOut(networkSetting: NetworkSetting): Long = networkSetting.connectionTimeOut
 
     @Provides
     @Singleton
     @ReadTimeOut
-    fun provideReadTimeOut(): Long = 20L
+    fun provideReadTimeOut(networkSetting: NetworkSetting): Long = networkSetting.readTimeOut
 
     @Provides
     @Singleton
     @WriteTimeOut
-    fun provideWriteTimeOut(): Long = 20L
+    fun provideWriteTimeOut(networkSetting: NetworkSetting): Long = networkSetting.writeTimeOut
 }

@@ -1,5 +1,6 @@
 package com.wooyj.ordermenu.data.remote
 
+import com.wooyj.ordermenu.data.remote.call.ResultCallAdapter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,6 +15,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object NetworkModule {
+    // OKHttp -> Network 통신 -> String
     @Singleton
     @Provides
     fun provideOkHttpClient(
@@ -30,6 +32,7 @@ object NetworkModule {
             .addInterceptor(loggingInterceptor)
             .build()
 
+    // Retrofit -> (OKHttp -> Network 통신 -> String) -> JSON / XML -> Object
     @Singleton
     @Provides
     fun provideRetrofit(
@@ -41,5 +44,6 @@ object NetworkModule {
             .baseUrl(baseUrl)
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create().asLenient())
+            .addCallAdapterFactory(ResultCallAdapter.Factory())
             .build()
 }

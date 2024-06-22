@@ -5,7 +5,7 @@ import com.wooyj.ordermenu.data.remote.dto.DogImageListDTO
 import retrofit2.Response
 
 interface DogDataSource {
-    suspend fun getDogList(): Response<List<BreedListDTO>>
+    suspend fun getDogList(): List<BreedListDTO>
 
     suspend fun getDogImageList(breedName: String): Response<List<DogImageListDTO>>
 

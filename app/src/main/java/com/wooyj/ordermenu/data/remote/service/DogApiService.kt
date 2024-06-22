@@ -3,7 +3,6 @@ package com.wooyj.ordermenu.data.remote.service
 import com.wooyj.ordermenu.data.remote.api.ApiUrl
 import com.wooyj.ordermenu.data.remote.dto.BreedListDTO
 import com.wooyj.ordermenu.data.remote.dto.DogImageListDTO
-import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -15,16 +14,16 @@ import retrofit2.http.Path
  */
 interface DogApiService {
     @GET(ApiUrl.API_BREED_LIST)
-    suspend fun getBreedList(): Response<List<BreedListDTO>>
+    suspend fun getBreedList(): Result<List<BreedListDTO>>
 
     @GET(ApiUrl.API_BREED_IMAGE_LIST)
     suspend fun getDogImageList(
         @Path("breedName") breedName: String,
-    ): Response<List<DogImageListDTO>>
+    ): Result<List<DogImageListDTO>>
 
     @GET(ApiUrl.API_SUBBREED_IMAGE_LIST)
     suspend fun getDogImageList(
         @Path("breedName") breedName: String,
         @Path("subBreedName") subBreedName: String,
-    ): Response<List<DogImageListDTO>>
+    ): Result<List<DogImageListDTO>>
 }
