@@ -5,7 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "breed")
 data class BreedEntity(
-    @PrimaryKey val breedId: String,
-    val breedName: String,
-    val subBreedName: String,
+    @PrimaryKey
+    val id: String,
+    val name: String,
+    val subName: String,
 )

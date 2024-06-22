@@ -53,3 +53,25 @@ Dapp/src/main/java/com/wooyj/ordermenu/data/remote/call/ResultCall.kt,b/e/bef40
 Kapp/src/main/java/com/wooyj/ordermenu/data/remote/call/ReusltCallAdapter.kt,9/a/9acb696ea0191ba68d42d623b0bd9240c048a062
 {
 Kapp/src/main/java/com/wooyj/ordermenu/data/remote/call/ResultCallAdapter.kt,9/7/97813aaabe75d71fe1efbdc0461a87ac2baf48cb
+É
+Sapp/src/main/java/com/wooyj/ordermenu/data/local/datastore/UserInfoDataStoreRepo.kt,7/f/7fd48270e6b28d228d981d2bc62464b6d6f8a2b7
+u
+Eapp/src/main/java/com/wooyj/ordermenu/data/local/room/dao/BreedDAO.kt,f/1/f1a3b55ee8800e7b0d0a8e21b27ed680ddea40e1
+{
+Kapp/src/main/java/com/wooyj/ordermenu/data/local/room/dao/FavoriteDogDAO.kt,e/6/e62331eb2a27ed26fbd29bd595e51ccbd64b3705
+{
+Kapp/src/main/java/com/wooyj/ordermenu/data/local/room/entity/BreedEntity.kt,d/e/deff1e351b788558dcf2c5c81c75b7d02f972630
+Å
+Qapp/src/main/java/com/wooyj/ordermenu/data/local/room/entity/FavoriteDogEntity.kt,e/4/e4f8321ab9d386450f448a7cfbf9c626508d4a6d
+t
+Dapp/src/main/java/com/wooyj/ordermenu/data/local/room/AppDatabase.kt,d/7/d7bdf6d58976d134bee3c1a545c9bf6ffe76a59b
+u
+Eapp/src/main/java/com/wooyj/ordermenu/data/local/di/DataBaseModule.kt,4/8/48370bb666cc1cbd92ef91231f637802e099ce69
+y
+Iapp/src/main/java/com/wooyj/ordermenu/data/local/room/dao/BreedDAOFlow.kt,4/3/43e75ff5a010ec1a833eedaf45a3d3c0539ce4c5
+P
+ app/src/main/AndroidManifest.xml,8/c/8c55c3ccc257e5907959013f99656e4c8ec3903e
+v
+Fapp/src/main/java/com/wooyj/ordermenu/data/local/di/DataStoreModule.kt,0/5/0528ef845af06270ed500a6a49400418691d9e6f
+~
+Napp/src/main/java/com/wooyj/ordermenu/data/local/datastore/DataStoreSetting.kt,0/c/0c1320b5747521b1923fc962bf110b712f8ee17b
