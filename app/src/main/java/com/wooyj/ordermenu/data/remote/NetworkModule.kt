@@ -1,5 +1,6 @@
 package com.wooyj.ordermenu.data.remote
 
+import com.wooyj.ordermenu.data.remote.call.ResultCallAdapter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -47,5 +48,6 @@ object NetworkModule {
             .baseUrl(baseUrl)
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create().asLenient())
+            .addCallAdapterFactory(ResultCallAdapter.Factory())
             .build()
 }
