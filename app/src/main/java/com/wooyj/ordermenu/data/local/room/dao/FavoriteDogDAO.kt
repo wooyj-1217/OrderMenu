@@ -3,18 +3,28 @@ package com.wooyj.ordermenu.data.local.room.dao
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.wooyj.ordermenu.data.local.room.entity.FavoriteDogEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavoriteDogDAO {
-    @Query("SELECT * FROM favorite_dog ORDER BY id DESC")
-    fun getFavoriteDogList(): Flow<List<FavoriteDogEntity>>
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(data: FavoriteDogEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(data: List<FavoriteDogEntity>)
+
+    @Update
+    suspend fun update(data: FavoriteDogEntity)
+
+    @Update
+    suspend fun update(data: List<FavoriteDogEntity>)
 
     @Delete
-    suspend fun deleteFavoriteDog(data: FavoriteDogEntity)
+    suspend fun delete(data: FavoriteDogEntity)
 
-    @Insert
-    suspend fun insertFavoriteDog(data: FavoriteDogEntity)
+    @Query("DELETE FROM favorite_dog")
+    suspend fun deleteAll()
 }

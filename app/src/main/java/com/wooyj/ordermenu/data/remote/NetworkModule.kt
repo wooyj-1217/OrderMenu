@@ -31,6 +31,11 @@ object NetworkModule {
             .addInterceptor(loggingInterceptor)
             .build()
 
+    // TODO("base url이 여러개일 경우에는 어떻게 처리하는 것이 좋을까요?")
+    // 케이스를 나누자면..
+    // - auth 인증이 필요한 경우 / auth 인증 필요없는 경우
+    // - 테스트서버용 url들 / 실서버용 url들
+    // okhttp client는 하나로 하되 retrofit 객체를 여러개를 만들어도 괜찮은가요?
     @Singleton
     @Provides
     fun provideRetrofit(
