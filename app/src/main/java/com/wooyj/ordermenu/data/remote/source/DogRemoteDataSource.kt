@@ -21,6 +21,7 @@ class DogRemoteDataSource
                     onSuccess = { it },
                     onFailure = { emptyList() },
                 )
+
         override suspend fun getDogImageList(breedName: String): List<DogImageListDTO> =
             service
                 .getDogImageList(breedName)

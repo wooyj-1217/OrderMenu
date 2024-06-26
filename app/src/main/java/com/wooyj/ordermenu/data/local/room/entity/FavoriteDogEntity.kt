@@ -19,7 +19,7 @@ import androidx.room.PrimaryKey
     indices = [Index(value = ["breedId"])], // 인덱스 추가
 )
 data class FavoriteDogEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long,
+    @PrimaryKey(autoGenerate = true) val _id: Long,
     val breedId: String,
     val fileName: String,
 )
