@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="read_time_out">20</integer>
+    <integer name="write_time_out">20</integer>
+    <integer name="connection_time_out">20</integer>
+</resources>

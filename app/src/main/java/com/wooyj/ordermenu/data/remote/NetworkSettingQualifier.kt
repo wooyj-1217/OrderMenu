@@ -8,12 +8,4 @@ annotation class BaseUrl
 
 @Retention(AnnotationRetention.BINARY)
 @Qualifier
-annotation class ConnectionTimeOut
-
-@Retention(AnnotationRetention.BINARY)
-@Qualifier
-annotation class ReadTimeOut
-
-@Retention(AnnotationRetention.BINARY)
-@Qualifier
-annotation class WriteTimeOut
+annotation class HeaderInterceptor

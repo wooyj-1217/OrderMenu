@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -18,15 +19,15 @@ object NetworkModule {
     @Provides
     fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
-        @ConnectionTimeOut connectionTimeOut: Long,
-        @ReadTimeOut readTimeOut: Long,
-        @WriteTimeOut writeTimeOut: Long,
+        @HeaderInterceptor headerInterceptor: Interceptor,
+        networkSetting: NetworkSetting,
     ): OkHttpClient =
         OkHttpClient
             .Builder()
-            .connectTimeout(connectionTimeOut, TimeUnit.SECONDS)
-            .writeTimeout(readTimeOut, TimeUnit.SECONDS)
-            .readTimeout(writeTimeOut, TimeUnit.SECONDS)
+            .connectTimeout(networkSetting.connectionTimeOut, TimeUnit.SECONDS)
+            .writeTimeout(networkSetting.writeTimeOut, TimeUnit.SECONDS)
+            .readTimeout(networkSetting.readTimeOut, TimeUnit.SECONDS)
+            .addInterceptor(headerInterceptor)
             .addInterceptor(loggingInterceptor)
             .build()
 
