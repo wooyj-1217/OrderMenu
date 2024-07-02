@@ -27,7 +27,7 @@ sealed class MenuOptionUiState {
     ) : MenuOptionUiState() {
         fun toEntity(): OrderOption =
             OrderOption(
-                menuType = menuType,
+                menuId = menuType.id,
                 tempOption = tempOption,
                 caffeineOption = caffeineOption,
                 iceOption = iceOption,
