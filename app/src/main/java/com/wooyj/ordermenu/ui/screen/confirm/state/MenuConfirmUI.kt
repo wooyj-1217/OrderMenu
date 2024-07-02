@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.wooyj.ordermenu.data.dto.OrderOption
+import com.wooyj.ordermenu.data.menuTypeFromId
 import com.wooyj.ordermenu.ui.screen.common.button.bottom.CloseButton
 
 @Composable
@@ -33,10 +34,10 @@ fun MenuConfirmUI(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Column {
-                Text(option.menuType.menuName)
+                Text(option.menuId.menuTypeFromId().menuName)
                 Text(option.toString())
             }
-            Text("${option.menuType.price}원")
+            Text("${option.menuId.menuTypeFromId().price}원")
         }
         CloseButton(onNextNavigation = goIntro)
     }

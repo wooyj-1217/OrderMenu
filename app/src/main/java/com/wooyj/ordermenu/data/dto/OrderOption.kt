@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 // DTO(Data Transfer Object)
 @Serializable
 data class OrderOption(
-    val menuType: MenuType,
+    val menuId: Int,
     var tempOption: TempOption?,
     var caffeineOption: CaffeineOption?,
     var iceOption: IceOption?,
