@@ -9,6 +9,13 @@ import okhttp3.Request
 import okhttp3.Response
 import javax.net.ssl.HttpsURLConnection
 
+// TODO("순환의존성 문제")
+// 단일 okhttpClient 객체를 만들고 나서 TokenInterceptor 생성했는데
+// TokenInterceptor에서 AuthJsPublicService를 사용하려고 하니까
+// Compile Error가 생기더라구요
+//  Found a dependency cycle:
+// okhttp객체 -> AuthJsPublicService(retrofit) -> TokenInterceptor -> okhttp객체
+// 이런 경우 어떻게 해결해야할까요?
 class TokenAuthenticator(
     private val context: Context,
     private val authJsPublicService: AuthJsPublicService,
