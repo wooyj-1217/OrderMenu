@@ -9,3 +9,7 @@ annotation class BaseUrl
 @Retention(AnnotationRetention.BINARY)
 @Qualifier
 annotation class HeaderInterceptor
+
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+annotation class TokenInterceptor

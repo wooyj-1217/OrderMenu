@@ -7,6 +7,7 @@ import kotlinx.coroutines.sync.withLock
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
+import javax.inject.Singleton
 import javax.net.ssl.HttpsURLConnection
 
 // TODO("4. 순환의존성 문제")
@@ -15,10 +16,11 @@ import javax.net.ssl.HttpsURLConnection
 // Compile Error가 생기더라구요
 //  Found a dependency cycle:
 // okhttp객체 -> AuthJsPublicService(retrofit) -> TokenInterceptor -> okhttp객체
-// 이런 경우 어떻게 해결해야할까요?
+// 아래와 같은 코드로 해결하긴 했는데 이게 맞는 방법인지 모르겠어요
+@Singleton
 class TokenAuthenticator(
     private val context: Context,
-    private val authJsPublicService: AuthJsPublicService,
+    private val authJsPublicService: Lazy<AuthJsPublicService>,
 ) : Interceptor {
     private val mutex = Mutex()
 
