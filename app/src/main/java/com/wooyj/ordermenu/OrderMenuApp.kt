@@ -18,6 +18,10 @@ class OrderMenuApp : Application()
  */
 
 // TODO("2. SnackbarHostState와 같은 State도 Screen을 관리하는 State에서 관리하나요?")
+// Compose View -> Screen
+// Page(Activity / Fragment) -> Screen (Composable Function)
+
+// Activity -> Screen
 
 /**
  * ex)
