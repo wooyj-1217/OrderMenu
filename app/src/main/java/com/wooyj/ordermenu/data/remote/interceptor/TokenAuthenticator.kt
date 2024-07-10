@@ -30,12 +30,30 @@ import javax.net.ssl.HttpsURLConnection
 // 1. 아래와 같은 코드로 해결하긴 했는데 이게 맞는 방법인가요?
 // 2. Lazy를 써서 넣으니까 왜 된건지도 잘 모르겠어요.
 
+// context Problem
+// Q. 1. TokenInterceptor에서 Context는 무슨 Context인가요?
+// Q. 2. Why Context 멤버변수로 하면 안좋을까요?
+// Q. 3. Context?? -> 흐름 -> 목적
+// Activity -> Context -> 무언가 그릴려고
+// Service -> Context -> 무언가 하려고
+// BroadcastReceiver -> Context -> 무언가 받으려고
+// Provider -> Context -> 무언가 주려고
+
+// A. 2. 흐름을 왜 가져야 하는가???
+// ???Context 흐름은 그때 그때 맞춰 쓰는게 좋다.
+
+// A. 1. 그때 그때 달라요 -> Application Context
+
 class TokenInterceptor
     @Inject
     constructor(
-        private val context: Context,
+        context: Context,
         private val authJsPublicService: Provider<AuthJsPublicService>,
     ) : Interceptor {
+        private val getString: (Int) -> String = context::getString
+
+        private val getInteger: (Int) -> Int = context.resources::getInteger
+
         private val mutex by lazy { Mutex() }
 
         override fun intercept(chain: Interceptor.Chain): Response =
@@ -44,11 +62,11 @@ class TokenInterceptor
                 val request = chain.request()
 
                 // No Auth의 경우 token을 넣지 않는다.
-                if (request.headers[context.getString(R.string.header_no_auth)] == context.getString(R.string._true)) {
+                if (request.headers[getString(R.string.header_no_auth)] == getString(R.string._true)) {
                     val temp =
                         request.headers
                             .newBuilder()
-                            .removeAll(context.getString(R.string.header_no_auth))
+                            .removeAll(getString(R.string.header_no_auth))
                             .build()
                     val newRequest = request.newBuilder().headers(temp).build()
                     return@runBlocking chain.proceed(newRequest)
@@ -72,11 +90,11 @@ class TokenInterceptor
 
                 // 갱신 토큰 값 가져오기
                 val newToken =
-                    if (responseCount > context.resources.getInteger(R.integer.max_response_count)) {
+                    if (responseCount > getInteger(R.integer.max_response_count)) {
                         // 5회가 넘어갈 때 : 로그아웃 처리(새로운 토큰도, Guest 토큰도 못가져오는 상태)
                         UserUtil.logout()
                         return@runBlocking response
-                    } else if (responseCount > context.resources.getInteger(R.integer.guest_token_count)) {
+                    } else if (responseCount > getInteger(R.integer.guest_token_count)) {
                         // 3회가 넘어갈 때 : Guest 토큰으로 갱신(로그아웃 처리됨)
                         getGuestToken()
                     } else {
@@ -154,8 +172,8 @@ class TokenInterceptor
                 request
                     .newBuilder()
                     .header(
-                        context.getString(R.string.authorization),
-                        context.getString(R.string.bearer_string, accessToken),
+                        getString(R.string.authorization),
+                        getString(R.string.bearer_string, accessToken),
                     ).build()
             return proceed(req)
         }
