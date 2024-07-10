@@ -3,6 +3,7 @@ package com.wooyj.ordermenu.ui.screen.intro
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,6 +22,15 @@ fun IntroScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    val effect by viewModel.effect.collectAsStateWithLifecycle(null)
+
+    LaunchedEffect(effect) {
+        when (effect) {
+            is IntroEffect.NavigateToMenuList -> onNextNavigation()
+            else -> Unit
+        }
+    }
+
     Scaffold(
         topBar = {
             AppNavBar(uiState = AppNavBarUiState.Intro, navAction = {})
@@ -30,7 +40,7 @@ fun IntroScreen(
             is IntroUiState.Success -> {
                 IntroUI(
                     modifier = modifier.padding(innerPadding),
-                    onNextNavigation = onNextNavigation,
+                    onNextNavigation = { viewModel.onEvent(IntroEvent.OnNextClickEvent) },
                     titleText = (uiState as IntroUiState.Success).text,
                 )
             }
