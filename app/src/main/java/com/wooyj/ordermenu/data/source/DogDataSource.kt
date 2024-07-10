@@ -1,4 +1,4 @@
-package com.wooyj.ordermenu.source
+package com.wooyj.ordermenu.data.source
 
 import com.wooyj.ordermenu.data.remote.dto.BreedListDTO
 import com.wooyj.ordermenu.data.remote.dto.DogImageListDTO

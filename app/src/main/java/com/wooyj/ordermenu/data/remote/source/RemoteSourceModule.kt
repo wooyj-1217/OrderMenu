@@ -1,6 +1,6 @@
 package com.wooyj.ordermenu.data.remote.source
 
-import com.wooyj.ordermenu.source.DogDataSource
+import com.wooyj.ordermenu.data.source.DogDataSource
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

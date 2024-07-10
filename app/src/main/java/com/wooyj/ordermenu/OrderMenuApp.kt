@@ -2,9 +2,17 @@ package com.wooyj.ordermenu
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
+import timber.log.Timber
 
 @HiltAndroidApp
-class OrderMenuApp : Application()
+class OrderMenuApp : Application() {
+    override fun onCreate() {
+        super.onCreate()
+
+        // TODO Initialize Timber -> 다음 시간.....
+        Timber.plant(Timber.DebugTree())
+    }
+}
 
 // TODO("1. Event/Effect 좀 헷갈려요.")
 
