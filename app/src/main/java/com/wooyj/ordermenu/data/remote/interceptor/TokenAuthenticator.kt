@@ -10,7 +10,6 @@ import com.glowdayz.glowmee.network.service.AuthJsPublicService
 import com.glowdayz.glowmee.utils.Utils
 import com.glowdayz.glowmee.utils.extension.getDecodeData
 import com.glowdayz.glowmee.utils.login.UserUtil
-import dagger.Lazy
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -19,6 +18,7 @@ import okhttp3.Request
 import okhttp3.Response
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Provider
 import javax.net.ssl.HttpsURLConnection
 
 // TODO("4. 순환의존성 문제")
@@ -34,9 +34,9 @@ class TokenInterceptor
     @Inject
     constructor(
         private val context: Context,
-        private val authJsPublicService: Lazy<AuthJsPublicService>,
+        private val authJsPublicService: Provider<AuthJsPublicService>,
     ) : Interceptor {
-        private val mutex = Mutex()
+        private val mutex by lazy { Mutex() }
 
         override fun intercept(chain: Interceptor.Chain): Response =
             runBlocking {

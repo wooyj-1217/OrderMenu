@@ -34,3 +34,5 @@ class OrderMenuApp : Application()
  */
 
 // TODO("3. 현업에서 SharedFlow를 쓰는 경우는 어떤게 있나요?")
+// SharedFlow -> No State -> 공유, 쓰고 버릴꺼
+// StateFlow -> State -> 중복 값 X, 다시 상태를 봐야할 때
