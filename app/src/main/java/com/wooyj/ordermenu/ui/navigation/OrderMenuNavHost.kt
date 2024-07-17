@@ -4,12 +4,17 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NamedNavArgument
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.perf.ktx.performance
 import com.wooyj.ordermenu.ui.screen.confirm.MenuConfirmScreen
 import com.wooyj.ordermenu.ui.screen.intro.IntroScreen
 import com.wooyj.ordermenu.ui.screen.list.MenuListScreen
@@ -27,10 +32,10 @@ fun OrderMenuNavHost(
         exitTransition = { ExitTransition.None },
         modifier = modifier,
     ) {
-        composable(route = Screen.Intro.route) {
+        logComposable(route = Screen.Intro.route) {
             IntroScreen(onNextNavigation = { navController.navigate(Screen.MenuList.route) })
         }
-        composable(route = Screen.MenuList.route) {
+        logComposable(route = Screen.MenuList.route) {
             MenuListScreen(
                 onAppBarAction = {
                     navController.popBackStack()
@@ -40,7 +45,7 @@ fun OrderMenuNavHost(
                 },
             )
         }
-        composable(
+        logComposable(
             route = Screen.SelectOption.route,
             arguments =
                 listOf(
@@ -56,7 +61,7 @@ fun OrderMenuNavHost(
                 },
             )
         }
-        composable(
+        logComposable(
             route = Screen.ConfirmOrder.route,
             arguments =
                 listOf(
@@ -74,4 +79,25 @@ fun OrderMenuNavHost(
             )
         }
     }
+}
+
+private fun NavGraphBuilder.logComposable(
+    route: String,
+    arguments: List<NamedNavArgument> = emptyList(),
+    content: @Composable () -> Unit,
+) {
+    composable(
+        route = route,
+        arguments = arguments,
+    ) {
+        val myTrace = Firebase.performance.newTrace(route)
+        myTrace.start()
+        content()
+        myTrace.stop()
+    }
+}
+
+fun logScreenOpen(screenName: String) {
+    val ca = FirebaseCrashlytics.getInstance()
+    ca.setCustomKey("screen_view", screenName)
 }
