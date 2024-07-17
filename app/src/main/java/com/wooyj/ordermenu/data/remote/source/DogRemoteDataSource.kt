@@ -3,7 +3,7 @@ package com.wooyj.ordermenu.data.remote.source
 import com.wooyj.ordermenu.data.remote.dto.BreedListDTO
 import com.wooyj.ordermenu.data.remote.dto.DogImageListDTO
 import com.wooyj.ordermenu.data.remote.service.DogApiService
-import com.wooyj.ordermenu.source.DogDataSource
+import com.wooyj.ordermenu.data.source.DogDataSource
 import timber.log.Timber
 import javax.inject.Inject
 

@@ -21,21 +21,12 @@ import timber.log.Timber
 import javax.inject.Inject
 import javax.net.ssl.HttpsURLConnection
 
-// TODO("4. 순환의존성 문제")
-// 단일 okhttpClient 객체를 만들고 나서 TokenInterceptor 생성했는데
-// TokenInterceptor에서 AuthJsPublicService를 사용하려고 하니까
-// Compile Error가 생기더라구요
-//  Found a dependency cycle:
-// okhttp객체 -> AuthJsPublicService(retrofit) -> TokenInterceptor -> okhttp객체
-// 1. 아래와 같은 코드로 해결하긴 했는데 이게 맞는 방법인가요?
-// 2. Lazy를 써서 넣으니까 왜 된건지도 잘 모르겠어요.
-
 class TokenInterceptor @Inject constructor(
-    private val context: Context,
+    context: Context,
     private val authJsPublicService: Lazy<AuthJsPublicService>,
 ) : Interceptor {
 
-    private val mutex = Mutex()
+    private val mutex = lazy { Mutex() }
 
     override fun intercept(chain: Interceptor.Chain): Response =
         runBlocking {
@@ -178,5 +169,3 @@ class TokenInterceptor @Inject constructor(
         return result
     }
 }
-
-
