@@ -1,16 +1,25 @@
 package com.wooyj.ordermenu
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.wooyj.ordermenu.ui.navigation.OrderMenuNavHost
 import com.wooyj.ordermenu.ui.theme.OrderMenuTheme
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.ref.WeakReference
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    //    val ctx: Context = this
+    val ctx: WeakReference<Context> = WeakReference(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        ctx.get()?.let {
+        }
+
         setContent {
             OrderMenuTheme {
                 OrderMenuNavHost()
