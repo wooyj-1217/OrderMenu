@@ -4,15 +4,20 @@ import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.wooyj.ordermenu.domain.repository.DogRepository
 import com.wooyj.ordermenu.ui.navigation.OrderMenuNavHost
 import com.wooyj.ordermenu.ui.theme.OrderMenuTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     //    val ctx: Context = this
     val ctx: WeakReference<Context> = WeakReference(this)
+
+    @Inject
+    lateinit var repository: DogRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

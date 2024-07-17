@@ -1,0 +1,16 @@
+package com.wooyj.ordermenu.app.di
+
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import timber.log.Timber
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+object TimberModule {
+    @Provides
+    @Singleton
+    fun provideTimberTree(): Timber.Tree = Timber.DebugTree()
+}

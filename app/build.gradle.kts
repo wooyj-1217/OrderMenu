@@ -6,6 +6,7 @@ plugins {
     id("com.google.devtools.ksp")
     kotlin("kapt")
     kotlin("plugin.serialization")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -74,6 +75,8 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
 
+    implementation("androidx.startup:startup-runtime:1.1.1")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -118,4 +121,8 @@ dependencies {
     ksp("androidx.room:room-compiler:$roomVersion")
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$roomVersion")
+
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+    implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.firebase:firebase-analytics")
 }
